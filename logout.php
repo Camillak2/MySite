@@ -1,7 +1,7 @@
 <?php
-// logout.php
 session_start();
-session_destroy();  // Уничтожение сессии
-header('Location: login.php');  // Перенаправление на страницу логина
+session_unset(); // Удаляем все сессионные переменные
+session_destroy(); // Уничтожаем сессию
+header('Location: index.php'); // Перенаправление на главную страницу
 exit;
 ?>

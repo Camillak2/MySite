@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
 // Модальное окно для увеличения изображений
 const modal = document.createElement('div');
 modal.classList.add('modal');
@@ -121,10 +120,11 @@ function showBookingForm() {
 }
 
 function closeBookingForm() {
-    document.getElementById('booking-form').style.display }
+    document.getElementById('booking-form').style.display
+}
 
 
-    let isAdminMode = false; // Track if admin mode is on
+let isAdminMode = false; // Track if admin mode is on
 const occupiedDates = new Set(); // Store occupied dates
 
 function toggleAdminMode() {
@@ -161,7 +161,7 @@ function createCalendar() {
         dayDiv.textContent = day;
 
         // Add click event to select the day
-        dayDiv.onclick = function() {
+        dayDiv.onclick = function () {
             toggleDaySelection(dayDiv);
         };
 
@@ -198,17 +198,110 @@ function closeBookingForm() {
 
 function formatPhoneNumber(input) {
     let phoneNumber = input.value.replace(/\D/g, ''); // Удаляем все нецифровые символы
-  
+
     if (phoneNumber.length === 0) {
-      input.value = '';
-      return;
+        input.value = '';
+        return;
     }
-  
+
     // Определяем, с какого символа начинать заполнение
     let startIndex = phoneNumber.startsWith('7') || phoneNumber.startsWith('8') ? 1 : 0;
-  
+
     // Добавляем маску
     input.value = `+7(${phoneNumber.substring(startIndex, startIndex + 3)}) ${phoneNumber.substring(startIndex + 3, startIndex + 6)}-${phoneNumber.substring(startIndex + 6, startIndex + 8)}-${phoneNumber.substring(startIndex + 8, startIndex + 10)}`;
-  }
+}
 
-  
+document.addEventListener('DOMContentLoaded', function () {
+    const circleItems = document.querySelectorAll('.circle-item');
+    let delay = 0;
+
+    circleItems.forEach((circleItem, index) => {
+        setTimeout(() => {
+            circleItem.classList.add('active'); // Активируем круг и линию
+        }, delay);
+        delay += 1000; // Задержка для следующего элемента (1 секунда)
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const lines = document.querySelectorAll('.line');
+    const circles = document.querySelectorAll('.circle-item');
+    let delay = 0;
+
+    lines.forEach((line, index) => {
+        setTimeout(() => {
+            line.classList.add('active'); // Активируем линию
+            if (circles[index]) {
+                circles[index].querySelector('.circle').classList.add('active'); // Активируем круг
+            }
+        }, delay);
+        delay += 1000; // Увеличиваем задержку для следующего элемента (1 секунда)
+    });
+});
+
+function filterApartments() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const apartmentCards = document.querySelectorAll('.apartment-card');
+    let count = 0;
+    let firstMatch = null; // Переменная для хранения первого совпадения
+
+    apartmentCards.forEach(card => {
+        const name = card.querySelector('h2').innerText.toLowerCase();
+        const description = card.querySelector('.description').innerText.toLowerCase();
+        const cost = card.querySelector('.description').children[7].innerText.toLowerCase(); // предполагаем, что стоимость находится в 8-м элементе
+
+        const matches = name.includes(filter) || description.includes(filter) || cost.includes(filter);
+
+        if (matches) {
+            card.style.display = '';
+            count++;
+            card.classList.add('highlight'); // Подсветка совпадения
+            setTimeout(() => {
+                card.classList.remove('highlight'); // Удаляем подсветку через некоторое время
+            }, 3000);
+
+            // Запоминаем первое найденное совпадение
+            if (!firstMatch) {
+                firstMatch = card;
+            }
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    document.getElementById('resultCount').innerText = `${count} из ${apartmentCards.length}`;
+
+    // Прокрутка к первому найденному элементу
+    if (firstMatch) {
+        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+}
+
+$(document).ready(function () {
+    // Add smooth scrolling to all links
+    $("a").on('click', function (event) {
+        if (this.hash !== "") {
+            event.preventDefault();
+            var hash = this.hash;
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top
+            }, 800, function () {
+                window.location.hash = hash;
+            });
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Проверка наличия куки
+    if (document.cookie.split(';').some((item) => item.trim().startsWith('admin_access='))) {
+        // Если куки установлены, показываем кнопку
+        document.getElementById('admin-login').style.display = 'block';
+    }
+});

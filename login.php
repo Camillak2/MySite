@@ -31,10 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>Авторизация</title>
 </head>
+
 <body>
     <h2>Авторизация</h2>
     <?php if (isset($error)): ?>
@@ -50,4 +52,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">Войти</button>
     </form>
 </body>
+
 </html>

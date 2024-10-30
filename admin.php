@@ -10,488 +10,277 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <style>
         body {
-          font-family: sans-serif;
+            font-family: sans-serif;
         }
-        .container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            z-index: 100;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .admin-form {
-          display: flex;
-          flex-direction: column;
-          width: 300px;
-          padding: 20px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
+
+        .logo-container {
+            display: flex;
+            align-items: center;
         }
-        .admin-form input {
-          padding: 10px;
-          margin-bottom: 10px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
+
+        .logo {
+            margin-right: 20px;
         }
-        .admin-form button {
-          padding: 10px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          border-radius: 3px;
-          cursor: pointer;
+
+        .logo img {
+            width: 100px;
+            height: auto;
         }
-      </style>
+
+        .title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .search-container {
+            margin-left: 20px;
+        }
+
+        .search-container input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .apartment-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 100px;
+            /* Ensure it clears the fixed header */
+            padding: 20px;
+        }
+
+        .apartment-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            width: calc(33% - 40px);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .apartment-card img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .apartment-card .description {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .apartment-card .description h2 {
+            margin: 10px 0;
+        }
+
+        .apartment-card .description p {
+            margin: 5px 0;
+        }
+
+        .apartment-card .description .book-now {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .apartment-card .description .edit-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links
-  $("a").on('click', function(event) {
+    <script>
+        $(document).ready(function () {
+            $("a").on('click', function (event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+                    var hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function () {
+                        window.location.hash = hash;
+                    });
+                }
+            });
+        });
 
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault;
+        function editCalendar(apartmentId) {
+            // Logic to open the calendar editing interface
+            alert('Editing calendar for apartment ID: ' + apartmentId);
+            // You can replace the above alert with your actual logic
+        }
 
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 800, function(){
-   
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-});
-</script>
+        function editPrice(apartmentId, currentPrice) {
+            var newPrice = prompt("Enter new price for apartment ID " + apartmentId + ":", currentPrice);
+            if (newPrice !== null) {
+                // Logic to save the new price
+                alert('New price for apartment ID ' + apartmentId + ' is ' + newPrice);
+                // You can replace the above alert with your actual logic
+            }
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Бронирование квартир</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
-    <style>
-        .main-photo {
-            opacity: 0;
-            transition: opacity 0.3s ease-in;
-        }
-        .main-photo.show {
-            opacity: 1;
-        }
-    </style>
 </head>
-<body>
-    
 
-    <!-- Header -->
+<body>
     <header>
         <div class="header-container">
-        <div class="logo-container">
-        <div class="logo">
-            <img src="logo.jpg" alt="Логотип" />
-        </div>
-        <div class="title">
-            <h1>Бронирование</h1>
-            <h1>квартир</h1>
-        </div>
-        </div>
-        <nav>
-          <ul>
-            <li><a href="#contacts" scroll-behavoir: smooth>Контакты</a></li>
-            <li><a href="#map">Карты</a></li>
-            <li><a href="#about">О нас</a></li>  
-          </ul>
-          <div class="search-container">
-            <input type="text" placeholder="Поиск квартиры" id="search" onkeyup="searchApartments()"/>
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="logo.jpg" alt="Логотип" />
+                </div>
+                <div class="title">
+                    <h1>Бронирование</h1>
+                    <h1>квартир</h1>
+                </div>
             </div>
-        </nav>
+            <nav>
+                <ul>
+                    <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
+                    <li><a href="#map" onclick="scrollToSection('map')">Карты</a></li>
+                    <li><a href="#about" onclick="scrollToSection('about')">О нас</a></li>
+                </ul>
+                <div class="search-container">
+                    <input type="text" placeholder="Поиск квартиры" id="search" onkeyup="searchApartments()" />
+                </div>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+    <?php
+    // Подключение к базе данных
+    $pdo = new PDO('mysql:host=localhost;dbname=mysite', 'root', 'mysql');
+
+    // Запрос для получения информации о квартирах
+    $sql = "SELECT * FROM flat";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $apartments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+
     <main>
         <img src="main_photo1.jpg" alt="Main Photo" class="main-photo">
         <div class="apartment-cards">
-            <!-- Apartment Card Example -->
-            <div class="apartment-card">
-                <div class="carousel" data-current-slide="0">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv1photo3.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo2.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo1.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo4.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo5.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo6.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo7.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv1photo8.jpg" alt="Двухкомнатная квартира">
+            <?php foreach ($apartments as $apartment): ?>
+                <div class="apartment-card">
+                    <div class="carousel" data-current-slide="0">
+                        <div class="carousel-images">
+                            <?php
+                            $photos = explode(', ', $apartment['Photo_path']);
+                            foreach ($photos as $photo):
+                                ?>
+                                <img src="<?php echo 'flats/' . trim($photo); ?>"
+                                    alt="<?php echo htmlspecialchars($apartment['Name']); ?>">
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="carousel-controls">
+                            <button class="prev" onclick="prevSlide(this)">&#10094;</button>
+                            <button class="next" onclick="nextSlide(this)">&#10095;</button>
+                        </div>
+                        <div class="carousel-circles">
+                            <?php for ($i = 0; $i < count($photos); $i++): ?>
+                                <span class="circle <?php echo $i === 0 ? 'active' : ''; ?>"
+                                    onclick="setSlide(<?php echo $i; ?>)"></span>
+                            <?php endfor; ?>
+                        </div>
                     </div>
-                    <div class="carousel-controls">
-                        <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                        <button class="next" onclick="nextSlide(this)">&#10095;</button>
+                    <div class="description">
+                        <h2><?php echo htmlspecialchars($apartment['Name']); ?></h2>
+                        <p>• <?php echo htmlspecialchars($apartment['Square']); ?> м²</p>
+                        <p><?php echo htmlspecialchars($apartment['Location']); ?></p>
+                        <p><?php echo htmlspecialchars($apartment['Metro']); ?></p>
+                        <p><?php echo htmlspecialchars($apartment['Description']); ?></p>
+                        <p>• ⁠Комфортное проживание до <?php echo htmlspecialchars($apartment['NumberOfPeople']); ?>
+                            человек.</p>
+                        <p><?php echo htmlspecialchars($apartment['Underwear']); ?></p>
+                        <p><?php echo htmlspecialchars($apartment['Device']); ?></p>
+                        <p>• <span
+                                id="price-<?php echo $apartment['id']; ?>"><?php echo htmlspecialchars($apartment['Cost']); ?></span>
+                            руб.</p>
+                        <p>Адрес: <?php echo htmlspecialchars($apartment['Address']); ?></p>
+                        <button class="book-now" onclick="showBookingForm()">Забронировать</button>
+                        <button class="edit-button" onclick="editCalendar(<?php echo $apartment['id']; ?>)">Редактировать
+                            календарь</button>
+                        <button class="edit-button"
+                            onclick="editPrice(<?php echo $apartment['id']; ?>, '<?php echo htmlspecialchars($apartment['Cost']); ?>')">Редактировать
+                            цену</button>
                     </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
                 </div>
-                <div class="description">
-                    <h2>Двухкомнатная квартира</h2>
-                    <p>• 64 м2 </p>
-                    <p>• ⁠До центра 5 минут на машине, 20 минут пешком.</p>
-                    <p>• ⁠Метро "Кремлёвская"</p>
-                    <p>• ⁠Комфортное проживание до 10 человек</p>
-                    <p>• ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                    <p>• ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p> </p>
-                    <p>Адрес: Казань, ул. Широкая, д. 2</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-
-            <!-- Repeat for more apartments -->
-            <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv2photo1.jpg" alt="Студия">
-                        <img src="kv2photo2.jpg" alt="Студия">
-                        <img src="kv2photo3.jpg" alt="Студия">
-                        <img src="kv2photo4.jpg" alt="Студия">
-                        <img src="kv2photo5.jpg" alt="Студия">
-                        <img src="kv2photo6.jpg" alt="Студия">
-                        <img src="kv2photo7.jpg" alt="Студия">
-                        <img src="kv2photo8.jpg" alt="Студия">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Студия в элитном доме</h2>
-                    <p>* 64 </p>
-                        <p>  * ⁠Исторический центр города. </p>
-                            <p>  * ⁠Метро "Площадь Тука"</p>
-                                <p> * ⁠Комфортное проживание до 4 человек </p>
-                                    <p> * ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                                        <p> * ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Щербаковский переулок, д. 7</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv3photo1.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo2.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo3.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo4.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo5.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo6.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo7.jpg" alt="Однокомнатная квартира">
-                        <img src="kv3photo8.jpg" alt="Однокомнатная квартира">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Однокомнатная квартира</h2>
-                    <p>* 30 м2</p>
-                        <p>* ⁠До центра 20 минут на машине.</p>
-                        <p>* ⁠Чистый воздух, реки, озёра, скверы, парки, водопады.</p>
-                        <p>* ⁠Комфортное проживание до 5 человек </p>
-                        <p>* ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                        <p>* ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Ильгама Шакирова, д. 5</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv4photo1.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo2.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo3.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo4.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo5.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo6.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo7.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo8.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv4photo9.jpg" alt="Двухкомнатная квартира">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Двухкомнатная квартира</h2>
-                    <p>* 48 м2 в элитном доме. </p>
-                       <p>* ⁠Центр города. 
-                        <p>* ⁠Метро "Козья слобода"</p>
-                        <p>* ⁠Шикарный вид на город из окна 22 этажа. </p>
-                        <p>* ⁠Комфортное проживание до 5 - 6 человек </p>
-                        <p>* ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                        <p>* ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Шоссейная, д. 57</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-
-
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv5photo1.jpg" alt="Студия">
-                        <img src="kv5photo2.jpg" alt="Студия">
-                        <img src="kv5photo3.jpg" alt="Студия">
-                        <img src="kv5photo4.jpg" alt="Студия">
-                        <img src="kv5photo5.jpg" alt="Студия">
-                        <img src="kv5photo6.jpg" alt="Студия">
-                        <img src="kv5photo7.jpg" alt="Студия">
-                        <img src="kv5photo8.jpg" alt="Студия">
-                        <img src="kv5photo9.jpg" alt="Студия">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle" onclick="showSlide(0)"></span>
-                        <span class="circle" onclick="showSlide(1)"></span>
-                        <span class="circle" onclick="showSlide(2)"></span>
-                        <span class="circle" onclick="showSlide(3)"></span>
-                        <span class="circle" onclick="showSlide(4)"></span>
-                        <span class="circle" onclick="showSlide(5)"></span>
-                        <span class="circle" onclick="showSlide(6)"></span>
-                        <span class="circle" onclick="showSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Студия</h2>
-                    <p>* 15 м2</p>
-                        <p> * ⁠До центра 15 минут на машине. </p>
-                            <p>* ⁠Метро "Северный вокзал"</p>
-                                <p>* ⁠Комфортное проживание до 2 человек</p> 
-                                    <p>* ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                                        <p>* ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Октябрьская, д. 38</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv6photo1.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo2.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo3.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo4.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo5.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo6.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo7.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo8.jpg" alt="Двухкомнатная квартира">
-                        <img src="kv6photo9.jpg" alt="Двухкомнатная квартира">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Двухкомнатная квартира</h2>
-                    <p>* 65 м2 в элитном доме. </p>
-                        <p>* ⁠Исторический центр города.</p> 
-                        <p>* ⁠Метро "Площадь Тукая"</p>
-                        <p>* ⁠Комфортное проживание до 7 человек </p>
-                        <p>* ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                        <p>* ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Щербаковский переулок, д. 7</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv7photo1.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo2.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo3.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo4.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo5.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo6.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo7.jpg" alt="Однокомнатная квартира">
-                        <img src="kv7photo8.jpg" alt="Однокомнатная квартира">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Однокомнатная квартира</h2>
-                    <p>* 30 м2</p>
-                        <p>   * ⁠Центр города. </p>
-                            <p> * ⁠Метро "Козья слобода"</p>
-                                <p>* ⁠Комфортное проживание до 5 человек </p>
-                                    <p>* ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                                        <p>* ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Декабристов, д. 89в</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv8photo1.jpg" alt="Студия">
-                        <img src="kv8photo2.jpg" alt="Студия">
-                        <img src="kv8photo3.jpg" alt="Студия">
-                        <img src="kv8photo4.jpg" alt="Студия">
-                        <img src="kv8photo5.jpg" alt="Студия">
-                        <img src="kv8photo6.jpg" alt="Студия">
-                        <img src="kv8photo7.jpg" alt="Студия">
-                        <img src="kv8photo8.jpg" alt="Студия">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Студия</h2>
-                    <p>* 32 м2</p>
-                        <p>* ⁠До центра 10 минут на машине. </p>
-                            <p>* ⁠Метро "Северный вокзал",  "Яшьлек"</p>
-                                <p>* ⁠Комфортное проживание до 4 человек </p>
-                                    <p>* ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                                        <p>* ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Восстания, д. 49</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-             <!-- Repeat for more apartments -->
-             <div class="apartment-card">
-                <div class="carousel">
-                    <button class="prev" onclick="prevSlide(this)">&#10094;</button>
-                    <div class="carousel-images">
-                        <img src="kv9photo1.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo2.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo3.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo4.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo5.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo6.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo7.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo8.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo9.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo10.jpg" alt="Однокомнатная квартира">
-                        <img src="kv9photo11.jpg" alt="Однокомнатная квартира">
-                    </div>
-                    <div class="carousel-circles">
-                        <span class="circle active" onclick="setSlide(0)"></span>
-                        <span class="circle" onclick="setSlide(1)"></span>
-                        <span class="circle" onclick="setSlide(2)"></span>
-                        <span class="circle" onclick="setSlide(3)"></span>
-                        <span class="circle" onclick="setSlide(4)"></span>
-                        <span class="circle" onclick="setSlide(5)"></span>
-                        <span class="circle" onclick="setSlide(6)"></span>
-                        <span class="circle" onclick="setSlide(7)"></span>
-                    </div>
-                    <button class="next" onclick="nextSlide(this)">&#10095;</button>
-                </div>
-                <div class="description">
-                    <h2>Однокомнатная квартира</h2>
-                    <p>* 40 м2 в элитном доме. </p>
-                    <p> * ⁠Исторический центр города. </p>
-                    <p>  * ⁠Метро "Площадь Тукая"</p>
-                    <p>  * ⁠Комфортное проживание до 3 - 4 человек. </p>
-                    <p>  * ⁠Чистое постельное бельё и полотенца для каждого гостя</p>
-                    <p>  * ⁠WiFi, TV, фен, утюг, микроволновая печь, холодильник и др.</p>
-                    <p>Адрес: Казань, ул. Щербаковский переулок, д. 7</p>
-                    <button class="book-now" onclick="showBookingForm()">Забронировать</button>
-                </div>
-            </div>
-            <!-- Add more apartment cards as needed -->
+            <?php endforeach; ?>
         </div>
-
         <div id="maps" class="maps-section">
             <!-- Map Embed Example -->
-            <iframe 
-            src="https://www.google.com/maps/d/embed?mid=YOUR_MAP_ID" 
-            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/d/embed?mid=YOUR_MAP_ID" width="600" height="450" style="border:0;"
+                allowfullscreen="" loading="lazy"></iframe>
         </div>
     </main>
     <script>
-        window.onload = function() {
+        window.onload = function () {
             document.querySelector('.main-photo').classList.add('show');
         };
     </script>
- <button id="admin-mode-toggle" onclick="toggleAdminMode()">Включить режим администратора</button>
     <section class="info-section">
         <h2 class="section-title">Как проходит заселение?</h2>
         <div class="circle-strip">
@@ -527,14 +316,16 @@ $(document).ready(function(){
         <h2 id="contacts" class="footer-title">Контактная информация</h2>
         <div class="footer-content">
             <div class="social-icons">
-                <a href="https://www.facebook.com"><img src="avito.png" alt="Facebook"></a>
-                <a href="https://www.twitter.com"><img src="whatsap.png" alt="Twitter"></a>
-                <a href="https://www.instagram.com"><img src="instagram-icon.png" alt="Instagram"></a>
+                <a href="https://www.facebook.com"><img src="/Networks/Avito.png" alt="Avito"></a>
+                <a href="https://www.twitter.com"><img src="/Networks/Telegram.png" alt="Telegram"></a>
+                <a href="https://www.instagram.com"><img src="/Networks/WhatsApp.png" alt="WhatsApp"></a>
+                <a href="https://www.instagram.com"><img src="/Networks/Instagram.png" alt="Instagram"></a>
+                <a href="mailto:info@apartmentbooking.com"><img src="/Networks/Email.png" alt="Email"></a>
             </div>
             <div class="contact-info">
-                <p>Телефон: <a href="tel:+71234567890">+7 123 456 7890</a></p>
+                <p>Телефон: <a href="tel:+71234567890">+7(123)456-78-90</a></p>
                 <p>Email: <a href="mailto:info@apartmentbooking.com">info@apartmentbooking.com</a></p>
-                <p><a href="login.php">Вход для администраторов</a></p>
+                <p><a href="index.php">ВЫХОД ДЛЯ АДМИНИСТРАТОРА</a></p>
             </div>
         </div>
     </footer>
@@ -543,17 +334,17 @@ $(document).ready(function(){
         <div class="form-content">
             <span class="close" onclick="closeBookingForm()">&times;</span>
             <h2>Забронировать</h2>
-                  <!-- Calendar Section for Admin -->
-        <div id="admin-calendar" style="display: none;">
-            <h3>Выберите даты для занятости:</h3>
-            <div id="calendar"></div>
-            <button onclick="markDatesAsOccupied()">Редактировать</button>
-        </div>
+            <!-- Calendar Section for Admin -->
+            <div id="admin-calendar" style="display: none;">
+                <h3>Выберите даты для занятости:</h3>
+                <div id="calendar"></div>
+                <button onclick="markDatesAsOccupied()">Редактировать</button>
+            </div>
             <form id="bookingForm" onsubmit="submitBookingForm(event)">
                 <label for="name">ФИО:</label>
                 <input type="text" id="name" name="name" required>
                 <label for="phone">Номер телефона:</label>
-                <input type="tel" id="phone" name="phone" required>
+                <input type="tel" id="phone" name="phone" required oninput="formatPhoneNumber(this)">
                 <label for="date">Дата:</label>
                 <input type="date" id="date" name="date" required>
                 <button type="submit">Отправить</button>
@@ -562,5 +353,5 @@ $(document).ready(function(){
     </div>
     <script src="script.js"></script>
 </body>
-</html>
 
+</html>

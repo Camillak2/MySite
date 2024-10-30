@@ -7,7 +7,8 @@ body {
 
 header {
     font-family: Oswald, sans-serif;
-    background-color: #D8C7AD; /* Бежевый цвет */
+    background-color: #D8C7AD;
+    /* Бежевый цвет */
     padding: 10px 20px;
 }
 
@@ -23,7 +24,8 @@ header {
 }
 
 .logo img {
-    height: 80px; /* Подберите подходящий размер */
+    height: 80px;
+    /* Подберите подходящий размер */
     margin-right: 20px;
 }
 
@@ -62,9 +64,11 @@ nav ul li a {
 .search-container input {
     padding: 5px;
     font-size: 16px;
-    border-radius: 5px; /* Закругляем углы */
+    border-radius: 5px;
+    /* Закругляем углы */
     border: 1px solid #301811;
-    max-width: 200px; /* Adjust width as necessary */
+    max-width: 200px;
+    /* Adjust width as necessary */
 }
 
 .main-photo {
@@ -102,85 +106,30 @@ nav ul li a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 20px;
     width: 500px;
+    /* Ширина карточки */
     overflow: hidden;
 }
 
 .carousel {
     position: relative;
     width: 100%;
-    height: 300px; /* Подгоните высоту по дизайну */
+    height: 300px;
+    /* Подгоните под ваш дизайн */
     overflow: hidden;
 }
 
 .carousel-images {
     display: flex;
-    height: 100%;
-    width: 100%;
+    transition: transform 0.5s ease-in-out;
+    /* Плавный переход */
 }
 
 .carousel-images img {
-    min-width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.carousel-controls {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-}
-
-.carousel-controls button {
-    background: rgba(0, 0, 0, 0.5);
-    border: none;
-    color: white;
-    font-size: 20px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.carousel-circles {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-}
-
-.carousel-circles .circle {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.carousel-circles .circle.active {
-    background-color: white;
-}
-
-
-
-/* .carousel {
-    position: relative;
     width: 100%;
     height: 300px;
-}
-
-.carousel-images {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel img {
-    width: 100%;
-    height: 300px;
+    /* Задайте нужную высоту */
     object-fit: cover;
-    cursor: pointer;
+    /* Сохраняет пропорции, центрирует и обрезает по краям */
 }
 
 .carousel-circles {
@@ -207,9 +156,9 @@ nav ul li a {
     transform: scale(1.2);
     opacity: 1;
     background-color: #EFBAA7;
+    /* Цвет подсветки */
     box-shadow: 0 0 10px rgba(250, 200, 200, 0.1);
-} */
-
+}
 
 /* Стили для модального окна */
 .modal {
@@ -222,8 +171,8 @@ nav ul li a {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.9);
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
 .modal-content {
@@ -233,24 +182,32 @@ nav ul li a {
     max-width: 900px;
 }
 
-.modal .prev, .modal .next {
+.modal .prev,
+.modal .next {
     cursor: pointer;
     position: absolute;
     top: 50%;
     width: auto;
     padding: 16px;
-    margin-top: -50px; /* Центрирование по вертикали */
-    color: white; /* Цвет текста */
+    margin-top: -50px;
+    /* Центрирование по вертикали */
+    color: white;
+    /* Цвет текста */
     font-weight: bold;
     font-size: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход цвета */
-    border-radius: 0 3px 3px 0; /* Закругление краев */
-    user-select: none; /* Запрет выделения текста */
-    opacity: 0.6; /* Установите прозрачность по умолчанию */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Плавный переход цвета */
+    border-radius: 0 3px 3px 0;
+    /* Закругление краев */
+    user-select: none;
+    /* Запрет выделения текста */
+    opacity: 0.6;
+    /* Установите прозрачность по умолчанию */
 }
 
-.modal .prev:hover, .modal .next:hover {
-    opacity: 1; 
+.modal .prev:hover,
+.modal .next:hover {
+    opacity: 1;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -281,27 +238,38 @@ nav ul li a {
     cursor: pointer;
 }
 
-.prev, .next {
-    
-    border: none; /* Убирает стандартную рамку */
-    color: white; /* Цвет текста */
-    padding: 10px 15px; /* Внутренние отступы */
-    font-size: 20px; /* Размер шрифта */
-    cursor: pointer; /* Указывает, что это кнопка */
-    border-radius: 20%; /* Полное закругление для круглой кнопки */
-    transition: background-color 0.3s; /* Плавный переход цвета при наведении */
+.prev,
+.next {
+
+    border: none;
+    /* Убирает стандартную рамку */
+    color: white;
+    /* Цвет текста */
+    padding: 10px 15px;
+    /* Внутренние отступы */
+    font-size: 20px;
+    /* Размер шрифта */
+    cursor: pointer;
+    /* Указывает, что это кнопка */
+    border-radius: 20%;
+    /* Полное закругление для круглой кнопки */
+    transition: background-color 0.3s;
+    /* Плавный переход цвета при наведении */
 }
-.prev, .next {
+
+.prev,
+.next {
     position: absolute;
     opacity: 0.8;
     top: 50%;
     transform: translateY(-50%);
-    color: #301811;  
+    color: #301811;
     padding: 10px;
     cursor: pointer;
 }
 
-.next:hover, .prev:hover {
+.next:hover,
+.prev:hover {
     background-color: #EFBAA7;
     opacity: 0.8;
 }
@@ -314,18 +282,19 @@ nav ul li a {
     right: 10px;
 }
 
-.description {    
+.description {
     padding: 20px;
 }
 
 .description h2 {
-    font-family: Oswald, sans-serif;;
+    font-family: Oswald, sans-serif;
+    ;
     margin-top: 0;
 }
 
 .description p {
-    margin: 0; 
-    line-height: 1.2; 
+    margin: 0;
+    line-height: 1.2;
 }
 
 .book-now {
@@ -405,8 +374,8 @@ footer {
 }
 
 .social-icons img {
-    width: 60px; 
-    height: auto; 
+    width: 60px;
+    height: auto;
 }
 
 /* New Block Styles */
@@ -443,7 +412,16 @@ footer {
     background-color: #301811;
     border-radius: 50%;
     margin: 0 auto;
+    opacity: 0;
+    /* Скрываем круги изначально */
+    transform: scale(0);
+    /* Скрываем круга с начальным масштабом */
+    transition: opacity 0.7s ease-in-out,
+        transform 0.7s ease-in-out,
+        box-shadow 0.7s ease-in-out;
+    /* Добавляем тень для эффекта */
 }
+
 .circle-item p {
     margin: 10px 0 0;
     color: #301811;
@@ -454,12 +432,33 @@ footer {
     flex-grow: 1;
     height: 3px;
     background-color: #301811;
-    margin: 0px -15px 50px -15px;
-    position: relative;
-    z-index: 0;
+    margin: 0 -15px 50px -15px;
+    opacity: 0;
+    /* Скрываем линии изначально */
+    transition: opacity 0.7s ease-in-out,
+        transform 0.7s ease-in-out;
+    /* Плавное изменение */
+    transform: translateY(-10px);
+    /* Начальное смещение вверх */
 }
 
-.booking-form {
+.active {
+    opacity: 1;
+    /* Показываем линии и круги */
+    transform: translateY(0);
+    /* Возвращаем в нормальное положение */
+}
+
+.circle.active {
+    opacity: 1;
+    transform: scale(1);
+    /* Возвращаем к нормальному размеру */
+    box-shadow: 0 0 20px rgba(48, 24, 17, 0.5);
+    /* Добавляем тень при появлении */
+}
+
+
+.circle .booking-form {
     display: none;
     position: fixed;
     top: 0;
@@ -531,12 +530,14 @@ footer {
 }
 
 .calendar-day.selected {
-    background-color: #008cba; /* Selected color */
+    background-color: #008cba;
+    /* Selected color */
     color: white;
 }
 
 .calendar-day.occupied {
-    background-color: #f44336; /* Occupied color */
+    background-color: #f44336;
+    /* Occupied color */
     color: white;
 }
 
@@ -567,12 +568,15 @@ footer {
     cursor: pointer;
     padding: 5px;
     border-radius: 50%;
-    background-color: #eee; /* Светло-серый фон */
-    transition: background-color 0.3s ease; /* Плавный переход при наведении */
+    background-color: #eee;
+    /* Светло-серый фон */
+    transition: background-color 0.3s ease;
+    /* Плавный переход при наведении */
 }
 
 .close:hover {
-    background-color: #ddd; /* Темнее при наведении */
+    background-color: #ddd;
+    /* Темнее при наведении */
 }
 
 label {
@@ -607,3 +611,7 @@ button[type="submit"]:hover {
     background-color: #45a049;
 }
 
+.highlight {
+    background-color: rgba(62, 31, 11, 0.448);
+    transition: background-color 0.5s ease;
+}
