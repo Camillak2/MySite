@@ -12,15 +12,85 @@ header {
     padding: 10px 20px;
 }
 
+body {
+    margin: 0;
+    /* Remove default body margin */
+    padding-top: 80px;
+    /* Prevent content from hiding under fixed header */
+}
+
 .header-container {
     display: flex;
     justify-content: space-between;
+    /* Space out logo and nav */
     align-items: center;
+    /* Vertically center items */
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #D8C7AD;
+    z-index: 100;
+    /* Ensure the header is above other content */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .logo-container {
     display: flex;
     align-items: center;
+    /* Vertically center logo and title */
+}
+
+nav {
+    flex-grow: 1;
+    /* Allow nav to take available space */
+}
+
+.nav-container {
+    display: flex;
+    /* Arrange items in a row */
+    align-items: center;
+    /* Center items vertically */
+    justify-content: center;
+    /* Center the contents of nav */
+}
+
+.nav-links {
+    display: flex;
+    /* Arrange items in a row */
+    list-style: none;
+    /* Remove bullet points */
+    padding: 0;
+    /* Remove default padding */
+    margin: 0;
+    /* Remove default margin */
+}
+
+.nav-links li {
+    margin: 0 15px;
+    /* Add space between links */
+}
+
+.search-container {
+    display: flex;
+    /* Keep input and count aligned horizontally */
+    align-items: center;
+    /* Center items vertically */
+    margin-left: 20px;
+    /* Space between links and search */
+}
+
+#searchInput {
+    padding: 5px;
+    /* Add some padding for better aesthetics */
+    margin-right: 10px;
+    /* Space between the input and result count */
+}
+
+#resultCount {
+    margin: 0;
+    /* Remove default margin for the result count */
 }
 
 .logo img {
@@ -378,84 +448,89 @@ footer {
     height: auto;
 }
 
-/* New Block Styles */
+/* Общая стилизация для секции */
 .info-section {
-    background-color: #D8C7AD;
-    padding: 40px 0;
     text-align: center;
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
 }
 
 .section-title {
+    font-size: 2em;
     color: #301811;
-    font-size: 32px;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
 }
 
+/* Стили для контейнера с кругами и линиями */
 .circle-strip {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
     position: relative;
 }
 
+/* Оформление линий между этапами */
+.line {
+    flex-grow: 1;
+    height: 3px;
+    background-color: #301811;
+    opacity: 0;
+    transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+    transform: translateY(-10px);
+    /* Начальное смещение вверх */
+}
+
+/* Стили для каждого этапа */
 .circle-item {
     text-align: center;
     position: relative;
     z-index: 1;
     margin: 0 10px;
+    max-width: 150px;
 }
 
+/* Круг с плавной анимацией */
 .circle {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: #301811;
     border-radius: 50%;
     margin: 0 auto;
     opacity: 0;
-    /* Скрываем круги изначально */
     transform: scale(0);
-    /* Скрываем круга с начальным масштабом */
-    transition: opacity 0.7s ease-in-out,
-        transform 0.7s ease-in-out,
-        box-shadow 0.7s ease-in-out;
-    /* Добавляем тень для эффекта */
+    transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out, box-shadow 0.7s ease-in-out;
 }
 
-.circle-item p {
-    margin: 10px 0 0;
+/* Текст этапов */
+.circle-item p:first-of-type {
+    font-weight: bold;
     color: #301811;
-    font-size: 14px;
+    margin-top: 10px;
 }
 
-.line {
-    flex-grow: 1;
-    height: 3px;
-    background-color: #301811;
-    margin: 0 -15px 50px -15px;
-    opacity: 0;
-    /* Скрываем линии изначально */
-    transition: opacity 0.7s ease-in-out,
-        transform 0.7s ease-in-out;
-    /* Плавное изменение */
-    transform: translateY(-10px);
-    /* Начальное смещение вверх */
+.circle-item p:last-of-type {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+    line-height: 1.4;
 }
 
-.active {
+/* Появление элементов при добавлении класса active */
+.active .line,
+.circle.active {
     opacity: 1;
-    /* Показываем линии и круги */
     transform: translateY(0);
-    /* Возвращаем в нормальное положение */
 }
 
 .circle.active {
     opacity: 1;
     transform: scale(1);
-    /* Возвращаем к нормальному размеру */
     box-shadow: 0 0 20px rgba(48, 24, 17, 0.5);
-    /* Добавляем тень при появлении */
 }
+
 
 
 .circle .booking-form {
@@ -553,6 +628,7 @@ footer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     width: 350px;
+    display: none;
 }
 
 .form-content {
@@ -614,4 +690,13 @@ button[type="submit"]:hover {
 .highlight {
     background-color: rgba(62, 31, 11, 0.448);
     transition: background-color 0.5s ease;
+}
+
+.booked-date {
+    background-color: red;
+    /* Change to your desired color */
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
 }

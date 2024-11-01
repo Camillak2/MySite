@@ -116,12 +116,20 @@ function searchApartments() {
 
 // JavaScript для управления формой бронирования
 function showBookingForm() {
-    document.getElementById('booking-form').style.display = 'flex';
+    document.getElementById('booking-form').style.display = 'flex'; // Открываем модальное окно
 }
 
 function closeBookingForm() {
-    document.getElementById('booking-form').style.display
+    document.getElementById('booking-form').style.display = 'none'; // Закрываем модальное окно
 }
+
+// Вызываем функцию при нажатии кнопки "Забронировать"
+document.querySelectorAll('.book-now').forEach(button => {
+    button.addEventListener('click', showBookingForm);
+});
+
+// Закрытие модального окна при нажатии на крестик
+document.querySelector('.close').addEventListener('click', closeBookingForm);
 
 
 let isAdminMode = false; // Track if admin mode is on
@@ -298,10 +306,25 @@ $(document).ready(function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Проверка наличия куки
-    if (document.cookie.split(';').some((item) => item.trim().startsWith('admin_access='))) {
-        // Если куки установлены, показываем кнопку
-        document.getElementById('admin-login').style.display = 'block';
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    const circleItems = document.querySelectorAll(".circle-item");
+    const lines = document.querySelectorAll(".line");
+
+    const showElements = () => {
+        circleItems.forEach((item, index) => {
+            const circle = item.querySelector(".circle");
+            const line = lines[index];
+            const rect = item.getBoundingClientRect();
+
+            // Проверка, находится ли элемент в поле видимости
+            if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                circle.classList.add("active");
+                if (line) line.classList.add("active");
+            }
+        });
+    };
+
+    // Добавляем обработчик событий для прокрутки и запускаем проверку при загрузке
+    window.addEventListener("scroll", showElements);
+    showElements();
 });

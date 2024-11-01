@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 // Проверяем, авторизован ли администратор
@@ -14,84 +15,6 @@ $adminLink = "admin.php"; // Ссылка для администраторов
 <html lang="ru">
 
 <head>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            position: fixed;
-            /* Делаем позиционирование фиксированным */
-            top: 0;
-            /* Отступ сверху */
-            left: 0;
-            /* Отступ слева */
-            width: 100%;
-            /* Занимает всю ширину экрана */
-            background-color: #fff;
-            /* Фон для шапки */
-            z-index: 100;
-            /* Устанавливаем z-index, чтобы шапка была поверх других элементов */
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            /* Тень для шапки */
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            margin-right: 20px;
-        }
-
-        .logo img {
-            width: 100px;
-            /* Размер логотипа */
-            height: auto;
-        }
-
-        .title {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .title h1 {
-            margin: 0;
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        nav li {
-            margin-right: 20px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .search-container {
-            margin-left: 20px;
-        }
-
-        .search-container input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <meta charset="UTF-8">
@@ -122,23 +45,23 @@ $adminLink = "admin.php"; // Ссылка для администраторов
                 </div>
             </div>
             <nav>
-                <ul>
-                    <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
-                    <li><a href="#map" onclick="scrollToSection('map')">Карты</a></li>
-                    <li><a href="#about" onclick="scrollToSection('about')">О нас</a></li>
-                </ul>
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Поиск по имени, цене или описанию"
-                        oninput="filterApartments()">
-                    <p id="resultCount"></p>
+                <div class="nav-container">
+                    <ul class="nav-links">
+                        <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
+                        <li><a href="#map" onclick="scrollToSection('map')">Карты</a></li>
+                        <li><a href="#about" onclick="scrollToSection('about')">О нас</a></li>
+                    </ul>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени, цене или описанию"
+                            oninput="filterApartments()">
+                        <p id="resultCount"></p>
+                    </div>
                 </div>
             </nav>
         </div>
-        <div class="navigation-buttons">
-            <button id="prevBtn" onclick="move(-1)">Назад</button>
-            <button id="nextBtn" onclick="move(1)">Вперед</button>
-        </div>
     </header>
+
+
 
     <?php
     // Подключение к базе данных
@@ -190,6 +113,8 @@ $adminLink = "admin.php"; // Ссылка для администраторов
                         <p><?php echo htmlspecialchars($apartment['Device']); ?></p>
                         <p>• <?php echo htmlspecialchars($apartment['Cost']); ?> руб.</p>
                         <p>Адрес: <?php echo htmlspecialchars($apartment['Address']); ?></p>
+                        <p><a href="<?php echo htmlspecialchars($apartment['SutochnoLink']); ?>" target="_blank">Перейти на
+                                Суточно.Ру</a></p>
                         <button class="book-now" onclick="showBookingForm()">Забронировать</button>
                     </div>
                 </div>
@@ -213,25 +138,26 @@ $adminLink = "admin.php"; // Ссылка для администраторов
             <div class="circle-item">
                 <div class="circle"></div>
                 <p>Этап 1</p>
-                <p>Этап 1</p>
+                <p>Просмотр квартир, сдающихся посуточно в городе Казань.</p>
             </div>
             <div class="line"></div>
             <div class="circle-item">
                 <div class="circle"></div>
                 <p>Этап 2</p>
-                <p>Этап 2</p>
+                <p>Выбор подходящего для вас жилья.</p>
             </div>
             <div class="line"></div>
             <div class="circle-item">
                 <div class="circle"></div>
                 <p>Этап 3</p>
-                <p>Этап 3</p>
+                <p>Заполнение заявки на желаемую бронь. Не забудьте указать необходимые данные о себе.</p>
             </div>
             <div class="line"></div>
             <div class="circle-item">
                 <div class="circle"></div>
                 <p>Этап 4</p>
-                <p>Этап 4</p>
+                <p>Ожидайте! В ближайшее время с вами свяжется администратор для обсуждения всех вопросов и нюансов при
+                    заселении.</p>
             </div>
             <div class="line"></div>
         </div>
@@ -240,20 +166,26 @@ $adminLink = "admin.php"; // Ссылка для администраторов
     <footer>
         <h2 id="contacts" class="footer-title">Контактная информация</h2>
         <div class="footer-content">
-            <div class="social-icons">
-                <a href="https://www.facebook.com"><img src="/Networks/Avito.png" alt="Avito"></a>
-                <a href="https://www.twitter.com"><img src="/Networks/Telegram.png" alt="Telegram"></a>
-                <a href="https://www.instagram.com"><img src="/Networks/WhatsApp.png" alt="WhatsApp"></a>
-                <a href="https://www.instagram.com"><img src="/Networks/Instagram.png" alt="Instagram"></a>
-                <a href="mailto:info@apartmentbooking.com"><img src="/Networks/Email.png" alt="Email"></a>
-            </div>
             <div class="contact-info">
-                <p>Телефон: <a href="tel:+71234567890">+7(123)456-78-90</a></p>
-                <p>Email: <a href="mailto:info@apartmentbooking.com">info@apartmentbooking.com</a></p>
-                <div id="admin-login" style="display: none;">
+                <p><a href="tel:+79097660628">+7 909 766-06-28</a></p>
+                <p>Email: <a href="mailto:5347612@mail.ru">5347612@mail.ru</a></p>
+                <p>ИП Забелкина Л.И.</p>
+                <p>ИНН 165606525483</p>
+                <p>ОГРНИП 321169000046647</p>
+            </div>
+            <div class="social-icons">
+                <a href="https://t.me/posutkakazanarenda"><img src="/Networks/Telegram.png" alt="Telegram"></a>
+                <a href="https://api.whatsapp.com/send?phone=79097760628"><img src="/Networks/WhatsApp.png"
+                        alt="WhatsApp"></a>
+                <a href="https://vk.com/id728306440"><img src="/Networks/VK.png" alt="VKontakte"></a>
+                <a href="mailto:5347612@mail.ru"><img src="/Networks/Email.png" alt="Email"></a>
+            </div>
+            <?php if (isset($_COOKIE['admin_access'])): ?>
+                <div id="admin-login">
                     <p><a href="login.php">ВХОД ДЛЯ АДМИНИСТРАТОРА</a></p>
                 </div>
-            </div>
+            <?php endif; ?>
+
         </div>
     </footer>
 
