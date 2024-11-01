@@ -12,229 +12,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 <html lang="ru">
 
 <head>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            z-index: 100;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            margin-right: 20px;
-        }
-
-        .logo img {
-            width: 100px;
-            height: auto;
-        }
-
-        .title {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .title h1 {
-            margin: 0;
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        nav li {
-            margin-right: 20px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .search-container {
-            margin-left: 20px;
-        }
-
-        .search-container input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .apartment-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-top: 100px;
-            /* Ensure it clears the fixed header */
-            padding: 20px;
-        }
-
-        .apartment-card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px;
-            width: calc(33% - 40px);
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .apartment-card img {
-            width: 100%;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .apartment-card .description {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .apartment-card .description h2 {
-            margin: 10px 0;
-        }
-
-        .apartment-card .description p {
-            margin: 5px 0;
-        }
-
-        .apartment-card .description .book-now,
-        .apartment-card .description .edit-button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .apartment-card .description .book-now {
-            background-color: #007bff;
-        }
-
-        .apartment-card .description .edit-button {
-            background-color: #28a745;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 60px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .booked-date {
-            background-color: red;
-            color: white;
-        }
-
-        .calendar {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .calendar input {
-            margin-bottom: 10px;
-        }
-
-        .calendar button {
-            background-color: #28a745;
-            color: #301811;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .calendar button:hover {
-            background-color: #218838;
-        }
-
-        .button-container {
-            display: flex;
-            /* Используем Flexbox для выравнивания */
-            justify-content: center;
-            /* Центрируем кнопки */
-            margin-top: 10px;
-            /* Отступ сверху */
-            color: #EFBAA7;
-        }
-
-        .button-container button {
-            background-color: #EFBAA7;
-            /* Розовый фон */
-            color: #301811;
-            /* Цвет текста */
-            border: none;
-            /* Убираем границы */
-            padding: 10px 20px;
-            /* Внутренние отступы */
-            border-radius: 5px;
-            /* Скругление углов */
-            cursor: pointer;
-            /* Курсор в виде руки при наведении */
-            margin-right: 10px;
-            /* Отступ между кнопками */
-        }
-
-        .button-container button:hover {
-            background-color: lightcoral;
-            /* Цвет кнопки при наведении */
-        }
-    </style>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -319,13 +96,17 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 </div>
             </div>
             <nav>
-                <ul>
-                    <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
-                    <li><a href="#map" onclick="scrollToSection('map')">Карты</a></li>
-                    <li><a href="#about" onclick="scrollToSection('about')">О нас</a></li>
-                </ul>
-                <div class="search-container">
-                    <input type="text" placeholder="Поиск квартиры" id="search" onkeyup="searchApartments()" />
+                <div class="nav-container">
+                    <ul class="nav-links">
+                        <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
+                        <li><a href="#map" onclick="scrollToSection('map')">Квартиры</a></li>
+                        <li><a href="#about" onclick="scrollToSection('about')">О брони</a></li>
+                    </ul>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени, цене или описанию"
+                            oninput="filterApartments()">
+                        <p id="resultCount"></p>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -506,7 +287,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     <p><a href="logout.php">ВЫХОД ДЛЯ АДМИНИСТРАТОРА</a></p>
                 </div>
             <?php endif; ?>
-
         </div>
     </footer>
 
