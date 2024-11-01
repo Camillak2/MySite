@@ -7,69 +7,144 @@ body {
 
 header {
     font-family: Oswald, sans-serif;
-    background-color: #D8C7AD;
-    /* Бежевый цвет */
+    background-color: #D8C7AD; /* Бежевый цвет */
     padding: 10px 20px;
+}
+
+body {
+    margin: 0; /* Удалить отступы по умолчанию у body */
+    padding-top: 80px; /* Предотвращаем скрытие контента под фиксированным заголовком */
 }
 
 .header-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Распределяем пространство между логотипом и навигацией */
+    align-items: center; /* Вертикальное выравнивание элементов */
+    padding: 10px 20px;
+    position: fixed; /* Фиксируем заголовок */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #D8C7AD; /* Фоновый цвет заголовка */
+    z-index: 100; /* Обеспечиваем, чтобы заголовок был выше другого контента */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .logo-container {
     display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 80px;
-    /* Подберите подходящий размер */
-    margin-right: 20px;
-}
-
-.title h1 {
-    color: #301811;
-    line-height: 1.3;
-    margin: 0;
+    align-items: center; /* Вертикальное выравнивание логотипа и заголовка */
 }
 
 nav {
-    display: flex;
-    align-items: center;
+    flex-grow: 1; /* Позволяем навигации занимать доступное пространство */
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
+.nav-container {
+    display: flex; /* Располагаем элементы в ряд */
+    align-items: center; /* Центрируем элементы по вертикали */
+    justify-content: flex-end; /* Выровнять содержимое навигации по правому краю */
+    width: 100%; /* Обеспечиваем, чтобы навигация занимала всю ширину */
 }
 
-nav ul li {
-    margin-right: 20px;
+.nav-links {
+    display: flex; /* Располагаем элементы в ряд */
+    list-style: none; /* Убираем маркеры */
+    padding: 0; /* Убираем отступы по умолчанию */
+    margin: 0; /* Убираем отступы по умолчанию */
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: #301811;
-    font-size: 22px;
+.nav-links li {
+    margin: 0 15px; /* Добавляем пространство между ссылками */
 }
 
 .search-container {
-    margin-left: 20px;
+    margin-top: 18px;
+    margin-right: 30px;
+    display: flex; /* Держим ввод и счетчик результатов в горизонтальном выравнивании */
+    align-items: center; /* Центрируем элементы по вертикали */
 }
 
-.search-container input {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-    /* Закругляем углы */
-    border: 1px solid #301811;
-    max-width: 200px;
-    /* Adjust width as necessary */
+#searchInput {
+    padding: 5px; /* Добавляем отступ для лучшего внешнего вида */
+    margin-right: 10px; /* Пространство между вводом и счетчиком результатов */
+    width: 300px; /* Увеличиваем ширину поля поиска */
+    font-size: 16px; /* Устанавливаем размер шрифта для удобства ввода */
+    border-radius: 5px; /* Закругляем углы */
+    border: 1px solid #301811; /* Рамка для поля ввода */
+    max-width: 100%; /* Обеспечиваем, чтобы поле поиска не выходило за пределы родителя */
 }
+
+#resultCount {
+    margin-bottom: 30px;
+}
+
+.logo img {
+    height: 80px; /* Подбираем подходящий размер для логотипа */
+    margin-right: 20px; /* Пространство между логотипом и заголовком */
+}
+
+.title h1 {
+    color: #301811; /* Цвет текста заголовка */
+    line-height: 1.3; /* Межстрочный интервал */
+    margin: 0; /* Убираем отступы */
+}
+
+nav {
+    display: flex; /* Убедимся, что навигация располагается в ряд */
+    align-items: center; /* Центрируем элементы по вертикали */
+}
+
+nav ul {
+    list-style: none; /* Убираем маркеры */
+    padding: 0; /* Убираем отступы по умолчанию */
+    margin: 0; /* Убираем отступы по умолчанию */
+    display: flex; /* Располагаем элементы в ряд */
+}
+
+nav ul li {
+    margin-right: 20px; /* Добавляем пространство между ссылками */
+}
+
+nav ul li a {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: #301811; /* Цвет текста */
+    font-size: 22px; /* Размер шрифта для ссылок */
+}
+
+/* Медиазапросы для адаптивности */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column; /* Располагаем элементы в колонку на мобильных устройствах */
+        align-items: flex-start; /* Выравниваем по левому краю */
+        padding: 10px; /* Уменьшаем отступы */
+    }
+
+    .nav-container {
+        justify-content: space-between; /* Распределяем пространство между навигацией и поиском */
+        width: 100%; /* Увеличиваем ширину */
+    }
+
+    .nav-links {
+        flex-direction: column; /* Выравниваем ссылки по вертикали */
+        margin-bottom: 10px; /* Добавляем отступ снизу для отделения от поиска */
+    }
+
+    .nav-links li {
+        margin: 5px 0; /* Уменьшаем отступ между ссылками */
+    }
+
+    #searchInput {
+        width: 100%; /* Увеличиваем ширину поля поиска на мобильных устройствах */
+        max-width: none; /* Убираем максимальную ширину */
+    }
+
+    .search-container {
+        margin-top: 10px; /* Уменьшаем отступ для поисковой строки */
+        margin-right: 0; /* Убираем правый отступ */
+        width: 100%; /* Увеличиваем ширину контейнера поиска */
+    }
+}
+
 
 .main-photo {
     width: 100%;
@@ -106,7 +181,6 @@ nav ul li a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 20px;
     width: 500px;
-    /* Ширина карточки */
     overflow: hidden;
 }
 
@@ -114,22 +188,18 @@ nav ul li a {
     position: relative;
     width: 100%;
     height: 300px;
-    /* Подгоните под ваш дизайн */
     overflow: hidden;
 }
 
 .carousel-images {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    /* Плавный переход */
 }
 
 .carousel-images img {
     width: 100%;
     height: 300px;
-    /* Задайте нужную высоту */
     object-fit: cover;
-    /* Сохраняет пропорции, центрирует и обрезает по краям */
 }
 
 .carousel-circles {
@@ -147,20 +217,18 @@ nav ul li a {
     height: 10px;
     background-color: white;
     border-radius: 50%;
-    opacity: 0.5;
+    opacity: 1; /* Убедитесь, что здесь установлено 1 */
     cursor: pointer;
-    transition: transform 0.3s, opacity 0.3s, background-color 0.3s;
+    transition: transform 0.3s, background-color 0.3s; 
 }
 
 .carousel-circles .circle.active {
     transform: scale(1.2);
-    opacity: 1;
     background-color: #EFBAA7;
-    /* Цвет подсветки */
     box-shadow: 0 0 10px rgba(250, 200, 200, 0.1);
 }
 
-/* Стили для модального окна */
+
 .modal {
     display: none;
     position: fixed;
@@ -190,19 +258,13 @@ nav ul li a {
     width: auto;
     padding: 16px;
     margin-top: -50px;
-    /* Центрирование по вертикали */
     color: white;
-    /* Цвет текста */
     font-weight: bold;
     font-size: 20px;
     transition: background-color 0.3s ease, color 0.3s ease;
-    /* Плавный переход цвета */
     border-radius: 0 3px 3px 0;
-    /* Закругление краев */
     user-select: none;
-    /* Запрет выделения текста */
     opacity: 0.6;
-    /* Установите прозрачность по умолчанию */
 }
 
 .modal .prev:hover,
@@ -240,21 +302,13 @@ nav ul li a {
 
 .prev,
 .next {
-
     border: none;
-    /* Убирает стандартную рамку */
     color: white;
-    /* Цвет текста */
     padding: 10px 15px;
-    /* Внутренние отступы */
     font-size: 20px;
-    /* Размер шрифта */
     cursor: pointer;
-    /* Указывает, что это кнопка */
     border-radius: 20%;
-    /* Полное закругление для круглой кнопки */
     transition: background-color 0.3s;
-    /* Плавный переход цвета при наведении */
 }
 
 .prev,
@@ -282,22 +336,25 @@ nav ul li a {
     right: 10px;
 }
 
+
 .description {
     padding: 20px;
 }
 
 .description h2 {
     font-family: Oswald, sans-serif;
-    ;
     margin-top: 0;
 }
 
-.description p {
+.description p { 
+    font-family: Manrope; 
     margin: 0;
     line-height: 1.2;
 }
 
 .book-now {
+    font-size: 16px;
+    font-family: Oswald;
     background-color: #EFBAA7;
     color: #301811;
     border: none;
@@ -305,6 +362,7 @@ nav ul li a {
     cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
+  
 }
 
 .maps-section {
@@ -316,15 +374,18 @@ footer {
     background-color: #D8C7AD;
     color: #301811;
     text-align: center;
-    padding: 40px 0;
+    padding: 50px 0;
     margin-top: 20px;
+    font-family: Merriweather;
 }
 
 .footer-title {
+    font-family: Merriweather;
     color: #301811;
-    font-size: 24px;
+    font-size: 32px;
     margin: 0;
     padding-bottom: 20px;
+    font-weight: bold;
 }
 
 .circle-strip {
@@ -378,84 +439,102 @@ footer {
     height: auto;
 }
 
-/* New Block Styles */
+/* Общая стилизация для секции */
 .info-section {
-    background-color: #D8C7AD;
-    padding: 40px 0;
+    font-family: Merriweather;
     text-align: center;
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .section-title {
+    font-size: 2em;
     color: #301811;
-    font-size: 32px;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
 }
 
+/* Стили для контейнера с кругами и линиями */
 .circle-strip {
+    margin-top: 80px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    position: relative;
+    justify-content: center; /* Центрируем элементы */
 }
 
+/* Оформление линий между этапами */
+.line {
+    flex-grow: 1;
+    height: 4px;
+    width: 470px;
+    background-color: #301811;
+    opacity: 0; /* Начальное состояние */
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    transform: translateY(-10px); /* Начальное смещение вверх */
+    margin: 0 0px; /* Отступы между кружочками */
+}
+
+/* Стили для каждого этапа */
 .circle-item {
     text-align: center;
     position: relative;
     z-index: 1;
     margin: 0 10px;
+    max-width: 250px;
+    width: 250px;
 }
 
+/* Круг с плавной анимацией */
 .circle {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: #301811;
     border-radius: 50%;
     margin: 0 auto;
-    opacity: 0;
-    /* Скрываем круги изначально */
+    opacity: 0; /* Начальное состояние */
     transform: scale(0);
-    /* Скрываем круга с начальным масштабом */
-    transition: opacity 0.7s ease-in-out,
-        transform 0.7s ease-in-out,
-        box-shadow 0.7s ease-in-out;
-    /* Добавляем тень для эффекта */
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
 }
 
-.circle-item p {
-    margin: 10px 0 0;
+/* Текст этапов */
+.circle-item p:first-of-type {
+    font-size: 18px;
+    font-weight: bold;
     color: #301811;
-    font-size: 14px;
+    margin-top: 20px;
 }
 
-.line {
-    flex-grow: 1;
-    height: 3px;
-    background-color: #301811;
-    margin: 0 -15px 50px -15px;
-    opacity: 0;
-    /* Скрываем линии изначально */
-    transition: opacity 0.7s ease-in-out,
-        transform 0.7s ease-in-out;
-    /* Плавное изменение */
-    transform: translateY(-10px);
-    /* Начальное смещение вверх */
+.circle-item p:last-of-type {
+    font-size: 0.99em;
+    color: #301811;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+/* Добавьте это в ваш CSS */
+.circle-item p {
+    opacity: 0; /* Начальное состояние для текста */
+    width: 250px;
+    transition: opacity 0.4s ease-in-out;
 }
 
-.active {
-    opacity: 1;
-    /* Показываем линии и круги */
-    transform: translateY(0);
-    /* Возвращаем в нормальное положение */
+.circle-item p.active {
+    opacity: 1; /* Появление текста при добавлении класса active */
 }
 
+
+/* Появление линий при добавлении класса active */
+.line.active {
+    opacity: 1; 
+    transform: translateY(0); /* Восстанавливаем позицию */
+}
+
+/* Появление кругов при добавлении класса active */
 .circle.active {
-    opacity: 1;
+    opacity: 1; 
     transform: scale(1);
-    /* Возвращаем к нормальному размеру */
-    box-shadow: 0 0 20px rgba(48, 24, 17, 0.5);
-    /* Добавляем тень при появлении */
+    box-shadow: 0 0 20px rgba(48, 24, 17, 0.5); /* Появление тени */
 }
+
 
 
 .circle .booking-form {
@@ -553,6 +632,7 @@ footer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     width: 350px;
+    display: none;
 }
 
 .form-content {
@@ -587,7 +667,8 @@ label {
 
 input[type="text"],
 input[type="tel"],
-input[type="date"] {
+input[type="date"],
+input[type="count"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -597,7 +678,7 @@ input[type="date"] {
 }
 
 button[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #301811;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -608,10 +689,19 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #301811;
 }
 
 .highlight {
     background-color: rgba(62, 31, 11, 0.448);
     transition: background-color 0.5s ease;
+}
+
+.booked-date {
+    background-color: red;
+    /* Change to your desired color */
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
 }

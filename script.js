@@ -1,29 +1,39 @@
 // JavaScript для управления каруселью изображений
+// Функция для отображения выбранного слайда
 function showSlide(carousel, index) {
     const slides = carousel.querySelectorAll('.carousel-images img');
     const circles = carousel.querySelectorAll('.circle');
-    let currentSlide = parseInt(carousel.dataset.currentSlide) || 0;
+    
+    // Установка текущего слайда
+    let currentSlide = index; // Присваиваем индекс переданного слайда
 
-    if (index >= slides.length) {
+    // Защита от выхода за пределы массива слайдов
+    if (currentSlide >= slides.length) {
         currentSlide = 0;
-    } else if (index < 0) {
+    } else if (currentSlide < 0) {
         currentSlide = slides.length - 1;
-    } else {
-        currentSlide = index;
     }
 
     carousel.dataset.currentSlide = currentSlide;
 
+    // Показ нужного изображения
     slides.forEach((slide, i) => {
         slide.style.transform = `translateX(-${currentSlide * 100}%)`;
     });
 
+    // Обновляем кружочки
     circles.forEach((circle, i) => {
         circle.classList.remove('active');
-        if (i == currentSlide) {
-            circle.classList.add('active');
+        if (i === currentSlide) {
+            circle.classList.add('active'); // Устанавливаем активный кружок
         }
     });
+}
+
+// Обработчик клика по кружочкам
+function setSlide(circle, index) {
+    const carousel = circle.closest('.carousel');
+    showSlide(carousel, index); // Перейти к выбранному слайду
 }
 
 function nextSlide(button) {
@@ -37,30 +47,6 @@ function prevSlide(button) {
     const currentSlide = parseInt(carousel.dataset.currentSlide) || 0;
     showSlide(carousel, currentSlide - 1);
 }
-
-function setSlide(circle, index) {
-    const carousel = circle.closest('.carousel');
-    showSlide(carousel, index);
-}
-
-// Инициализация каруселей при загрузке страницы
-document.addEventListener('DOMContentLoaded', function () {
-    const carousels = document.querySelectorAll('.carousel');
-    carousels.forEach(carousel => {
-        showSlide(carousel, 0);
-
-        // Добавим обработчики событий для увеличения изображений
-        const images = carousel.querySelectorAll('.carousel-images img');
-        images.forEach(image => {
-            image.addEventListener('click', openModal);
-        });
-
-        const circles = carousel.querySelectorAll('.circle');
-        circles.forEach((circle, index) => {
-            circle.addEventListener('click', () => setSlide(circle, index));
-        });
-    });
-});
 
 // Модальное окно для увеличения изображений
 const modal = document.createElement('div');
@@ -116,12 +102,20 @@ function searchApartments() {
 
 // JavaScript для управления формой бронирования
 function showBookingForm() {
-    document.getElementById('booking-form').style.display = 'flex';
+    document.getElementById('booking-form').style.display = 'flex'; // Открываем модальное окно
 }
 
 function closeBookingForm() {
-    document.getElementById('booking-form').style.display
+    document.getElementById('booking-form').style.display = 'none'; // Закрываем модальное окно
 }
+
+// Вызываем функцию при нажатии кнопки "Забронировать"
+document.querySelectorAll('.book-now').forEach(button => {
+    button.addEventListener('click', showBookingForm);
+});
+
+// Закрытие модального окна при нажатии на крестик
+document.querySelector('.close').addEventListener('click', closeBookingForm);
 
 
 let isAdminMode = false; // Track if admin mode is on
@@ -212,33 +206,45 @@ function formatPhoneNumber(input) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const circleItems = document.querySelectorAll('.circle-item');
-    let delay = 0;
-
-    circleItems.forEach((circleItem, index) => {
-        setTimeout(() => {
-            circleItem.classList.add('active'); // Активируем круг и линию
-        }, delay);
-        delay += 1000; // Задержка для следующего элемента (1 секунда)
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
     const lines = document.querySelectorAll('.line');
-    const circles = document.querySelectorAll('.circle-item');
+    const circles = document.querySelectorAll('.circle');
+    const texts = document.querySelectorAll('.circle-item p'); // Получаем тексты этапов
     let delay = 0;
 
-    lines.forEach((line, index) => {
+    // Сначала активируем линии, кружки и текст поочередно
+    for (let i = 0; i < circles.length; i++) {
+        // Активируем линию
         setTimeout(() => {
-            line.classList.add('active'); // Активируем линию
-            if (circles[index]) {
-                circles[index].querySelector('.circle').classList.add('active'); // Активируем круг
+            if (lines[i]) {
+                lines[i].classList.add('active');
             }
         }, delay);
-        delay += 1000; // Увеличиваем задержку для следующего элемента (1 секунда)
-    });
+
+        // Увеличиваем задержку перед следующим элементом
+        delay += 300; // 1 секунда задержки для линии
+
+        // Активируем круг
+        setTimeout(() => {
+            if (circles[i]) {
+                circles[i].classList.add('active');
+            }
+        }, delay);
+
+        // Увеличиваем задержку перед следующим элементом
+        delay += 300; // 1 секунда задержки для круга
+
+        // Активируем текст этапа
+        setTimeout(() => {
+            if (texts[i]) {
+                texts[i].classList.add('active'); // Можно добавить класс для анимации текста, если требуется
+            }
+        }, delay);
+
+        // Увеличиваем задержку перед следующим элементом
+        delay += 300; // 1 секунда задержки для текста
+    }
 });
+
 
 function filterApartments() {
     const input = document.getElementById('searchInput');
@@ -298,10 +304,25 @@ $(document).ready(function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Проверка наличия куки
-    if (document.cookie.split(';').some((item) => item.trim().startsWith('admin_access='))) {
-        // Если куки установлены, показываем кнопку
-        document.getElementById('admin-login').style.display = 'block';
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    const circleItems = document.querySelectorAll(".circle-item");
+    const lines = document.querySelectorAll(".line");
+
+    const showElements = () => {
+        circleItems.forEach((item, index) => {
+            const circle = item.querySelector(".circle");
+            const line = lines[index];
+            const rect = item.getBoundingClientRect();
+
+            // Проверка, находится ли элемент в поле видимости
+            if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                circle.classList.add("active");
+                if (line) line.classList.add("active");
+            }
+        });
+    };
+
+    // Добавляем обработчик событий для прокрутки и запускаем проверку при загрузке
+    window.addEventListener("scroll", showElements);
+    showElements();
 });
