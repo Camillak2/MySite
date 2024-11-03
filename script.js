@@ -3,7 +3,7 @@
 function showSlide(carousel, index) {
     const slides = carousel.querySelectorAll('.carousel-images img');
     const circles = carousel.querySelectorAll('.circle');
-    
+
     // Установка текущего слайда
     let currentSlide = index; // Присваиваем индекс переданного слайда
 
@@ -326,3 +326,29 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", showElements);
     showElements();
 });
+
+function submitBookingForm(event) {
+    event.preventDefault(); // Prevent the form from submitting the default way
+
+    const formData = new FormData(document.getElementById('bookingForm'));
+
+    // Send the data to the server using Fetch API
+    fetch('reserve.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Бронирование успешно!');
+                closeBookingForm(); // Close the booking form after successful submission
+            } else {
+                alert('Ошибка: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            console.error('Error:', error);
+            alert('Произошла ошибка. Попробуйте еще раз.');
+        });
+}

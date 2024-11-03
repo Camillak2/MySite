@@ -7,71 +7,99 @@ body {
 
 header {
     font-family: Oswald, sans-serif;
-    background-color: #D8C7AD; /* Бежевый цвет */
+    background-color: #D8C7AD;
+    /* Бежевый цвет */
     padding: 10px 20px;
 }
 
 body {
-    margin: 0; /* Удалить отступы по умолчанию у body */
-    padding-top: 80px; /* Предотвращаем скрытие контента под фиксированным заголовком */
+    margin: 0;
+    /* Удалить отступы по умолчанию у body */
+    padding-top: 80px;
+    /* Предотвращаем скрытие контента под фиксированным заголовком */
 }
 
 .header-container {
     display: flex;
-    justify-content: space-between; /* Распределяем пространство между логотипом и навигацией */
-    align-items: center; /* Вертикальное выравнивание элементов */
+    justify-content: space-between;
+    /* Распределяем пространство между логотипом и навигацией */
+    align-items: center;
+    /* Вертикальное выравнивание элементов */
     padding: 10px 20px;
-    position: fixed; /* Фиксируем заголовок */
+    position: fixed;
+    /* Фиксируем заголовок */
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #D8C7AD; /* Фоновый цвет заголовка */
-    z-index: 100; /* Обеспечиваем, чтобы заголовок был выше другого контента */
+    background-color: #D8C7AD;
+    /* Фоновый цвет заголовка */
+    z-index: 100;
+    /* Обеспечиваем, чтобы заголовок был выше другого контента */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .logo-container {
     display: flex;
-    align-items: center; /* Вертикальное выравнивание логотипа и заголовка */
+    align-items: center;
+    /* Вертикальное выравнивание логотипа и заголовка */
 }
 
 nav {
-    flex-grow: 1; /* Позволяем навигации занимать доступное пространство */
+    flex-grow: 1;
+    /* Позволяем навигации занимать доступное пространство */
 }
 
 .nav-container {
-    display: flex; /* Располагаем элементы в ряд */
-    align-items: center; /* Центрируем элементы по вертикали */
-    justify-content: flex-end; /* Выровнять содержимое навигации по правому краю */
-    width: 100%; /* Обеспечиваем, чтобы навигация занимала всю ширину */
+    display: flex;
+    /* Располагаем элементы в ряд */
+    align-items: center;
+    /* Центрируем элементы по вертикали */
+    justify-content: flex-end;
+    /* Выровнять содержимое навигации по правому краю */
+    width: 100%;
+    /* Обеспечиваем, чтобы навигация занимала всю ширину */
 }
 
 .nav-links {
-    display: flex; /* Располагаем элементы в ряд */
-    list-style: none; /* Убираем маркеры */
-    padding: 0; /* Убираем отступы по умолчанию */
-    margin: 0; /* Убираем отступы по умолчанию */
+    display: flex;
+    /* Располагаем элементы в ряд */
+    list-style: none;
+    /* Убираем маркеры */
+    padding: 0;
+    /* Убираем отступы по умолчанию */
+    margin: 0;
+    /* Убираем отступы по умолчанию */
 }
 
 .nav-links li {
-    margin: 0 15px; /* Добавляем пространство между ссылками */
+    margin: 0 15px;
+    /* Добавляем пространство между ссылками */
 }
 
 .search-container {
     margin-top: 18px;
     margin-right: 30px;
-    display: flex; /* Держим ввод и счетчик результатов в горизонтальном выравнивании */
-    align-items: center; /* Центрируем элементы по вертикали */
+    display: flex;
+    /* Держим ввод и счетчик результатов в горизонтальном выравнивании */
+    align-items: center;
+    /* Центрируем элементы по вертикали */
 }
 
 #searchInput {
-    padding: 5px; /* Добавляем отступ для лучшего внешнего вида */
-    margin-right: 10px; /* Пространство между вводом и счетчиком результатов */
-    width: 300px; /* Увеличиваем ширину поля поиска */
-    font-size: 16px; /* Устанавливаем размер шрифта для удобства ввода */
-    border-radius: 5px; /* Закругляем углы */
-    border: 1px solid #301811; /* Рамка для поля ввода */
-    max-width: 100%; /* Обеспечиваем, чтобы поле поиска не выходило за пределы родителя */
+    padding: 5px;
+    /* Добавляем отступ для лучшего внешнего вида */
+    margin-right: 10px;
+    /* Пространство между вводом и счетчиком результатов */
+    width: 300px;
+    /* Увеличиваем ширину поля поиска */
+    font-size: 16px;
+    /* Устанавливаем размер шрифта для удобства ввода */
+    border-radius: 5px;
+    /* Закругляем углы */
+    border: 1px solid #301811;
+    /* Рамка для поля ввода */
+    max-width: 100%;
+    /* Обеспечиваем, чтобы поле поиска не выходило за пределы родителя */
 }
 
 #resultCount {
@@ -79,69 +107,97 @@ nav {
 }
 
 .logo img {
-    height: 80px; /* Подбираем подходящий размер для логотипа */
-    margin-right: 20px; /* Пространство между логотипом и заголовком */
+    height: 80px;
+    /* Подбираем подходящий размер для логотипа */
+    margin-right: 20px;
+    /* Пространство между логотипом и заголовком */
 }
 
 .title h1 {
-    color: #301811; /* Цвет текста заголовка */
-    line-height: 1.3; /* Межстрочный интервал */
-    margin: 0; /* Убираем отступы */
+    color: #301811;
+    /* Цвет текста заголовка */
+    line-height: 1.3;
+    /* Межстрочный интервал */
+    margin: 0;
+    /* Убираем отступы */
 }
 
 nav {
-    display: flex; /* Убедимся, что навигация располагается в ряд */
-    align-items: center; /* Центрируем элементы по вертикали */
+    display: flex;
+    /* Убедимся, что навигация располагается в ряд */
+    align-items: center;
+    /* Центрируем элементы по вертикали */
 }
 
 nav ul {
-    list-style: none; /* Убираем маркеры */
-    padding: 0; /* Убираем отступы по умолчанию */
-    margin: 0; /* Убираем отступы по умолчанию */
-    display: flex; /* Располагаем элементы в ряд */
+    list-style: none;
+    /* Убираем маркеры */
+    padding: 0;
+    /* Убираем отступы по умолчанию */
+    margin: 0;
+    /* Убираем отступы по умолчанию */
+    display: flex;
+    /* Располагаем элементы в ряд */
 }
 
 nav ul li {
-    margin-right: 20px; /* Добавляем пространство между ссылками */
+    margin-right: 20px;
+    /* Добавляем пространство между ссылками */
 }
 
 nav ul li a {
-    text-decoration: none; /* Убираем подчеркивание */
-    color: #301811; /* Цвет текста */
-    font-size: 22px; /* Размер шрифта для ссылок */
+    text-decoration: none;
+    /* Убираем подчеркивание */
+    color: #301811;
+    /* Цвет текста */
+    font-size: 22px;
+    /* Размер шрифта для ссылок */
 }
 
 /* Медиазапросы для адаптивности */
 @media (max-width: 768px) {
     .header-container {
-        flex-direction: column; /* Располагаем элементы в колонку на мобильных устройствах */
-        align-items: flex-start; /* Выравниваем по левому краю */
-        padding: 10px; /* Уменьшаем отступы */
+        flex-direction: column;
+        /* Располагаем элементы в колонку на мобильных устройствах */
+        align-items: flex-start;
+        /* Выравниваем по левому краю */
+        padding: 10px;
+        /* Уменьшаем отступы */
     }
 
     .nav-container {
-        justify-content: space-between; /* Распределяем пространство между навигацией и поиском */
-        width: 100%; /* Увеличиваем ширину */
+        justify-content: space-between;
+        /* Распределяем пространство между навигацией и поиском */
+        width: 100%;
+        /* Увеличиваем ширину */
     }
 
     .nav-links {
-        flex-direction: column; /* Выравниваем ссылки по вертикали */
-        margin-bottom: 10px; /* Добавляем отступ снизу для отделения от поиска */
+        flex-direction: column;
+        /* Выравниваем ссылки по вертикали */
+        margin-bottom: 10px;
+        /* Добавляем отступ снизу для отделения от поиска */
     }
 
     .nav-links li {
-        margin: 5px 0; /* Уменьшаем отступ между ссылками */
+        margin: 5px 0;
+        /* Уменьшаем отступ между ссылками */
     }
 
     #searchInput {
-        width: 100%; /* Увеличиваем ширину поля поиска на мобильных устройствах */
-        max-width: none; /* Убираем максимальную ширину */
+        width: 100%;
+        /* Увеличиваем ширину поля поиска на мобильных устройствах */
+        max-width: none;
+        /* Убираем максимальную ширину */
     }
 
     .search-container {
-        margin-top: 10px; /* Уменьшаем отступ для поисковой строки */
-        margin-right: 0; /* Убираем правый отступ */
-        width: 100%; /* Увеличиваем ширину контейнера поиска */
+        margin-top: 10px;
+        /* Уменьшаем отступ для поисковой строки */
+        margin-right: 0;
+        /* Убираем правый отступ */
+        width: 100%;
+        /* Увеличиваем ширину контейнера поиска */
     }
 }
 
@@ -217,9 +273,10 @@ nav ul li a {
     height: 10px;
     background-color: white;
     border-radius: 50%;
-    opacity: 1; /* Убедитесь, что здесь установлено 1 */
+    opacity: 1;
+    /* Убедитесь, что здесь установлено 1 */
     cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s; 
+    transition: transform 0.3s, background-color 0.3s;
 }
 
 .carousel-circles .circle.active {
@@ -346,8 +403,8 @@ nav ul li a {
     margin-top: 0;
 }
 
-.description p { 
-    font-family: Manrope; 
+.description p {
+    font-family: Manrope;
     margin: 0;
     line-height: 1.2;
 }
@@ -358,12 +415,55 @@ nav ul li a {
     background-color: #EFBAA7;
     color: #301811;
     border: none;
-    padding: 10px 20px;
+    padding: 8px 20px;
     cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
-  
+
 }
+
+.edit-button {
+    font-size: 16px;
+    font-family: Oswald;
+    background-color: #EFBAA7;
+    color: #301811;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+
+
+}
+
+.modal-save-date {
+    font-size: 16px;
+    font-family: Oswald;
+    background-color: #EFBAA7;
+    color: #301811;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+
+}
+
+.modal-save-price {
+    font-size: 16px;
+    font-family: Oswald;
+    background-color: #EFBAA7;
+    color: #301811;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+
+}
+
 
 .maps-section {
     padding: 20px;
@@ -459,7 +559,8 @@ footer {
     margin-top: 80px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Центрируем элементы */
+    justify-content: center;
+    /* Центрируем элементы */
 }
 
 /* Оформление линий между этапами */
@@ -468,10 +569,13 @@ footer {
     height: 4px;
     width: 470px;
     background-color: #301811;
-    opacity: 0; /* Начальное состояние */
+    opacity: 0;
+    /* Начальное состояние */
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-    transform: translateY(-10px); /* Начальное смещение вверх */
-    margin: 0 0px; /* Отступы между кружочками */
+    transform: translateY(-10px);
+    /* Начальное смещение вверх */
+    margin: 0 0px;
+    /* Отступы между кружочками */
 }
 
 /* Стили для каждого этапа */
@@ -491,7 +595,8 @@ footer {
     background-color: #301811;
     border-radius: 50%;
     margin: 0 auto;
-    opacity: 0; /* Начальное состояние */
+    opacity: 0;
+    /* Начальное состояние */
     transform: scale(0);
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
 }
@@ -510,29 +615,34 @@ footer {
     margin-top: 10px;
     line-height: 1.4;
 }
+
 /* Добавьте это в ваш CSS */
 .circle-item p {
-    opacity: 0; /* Начальное состояние для текста */
+    opacity: 0;
+    /* Начальное состояние для текста */
     width: 250px;
     transition: opacity 0.4s ease-in-out;
 }
 
 .circle-item p.active {
-    opacity: 1; /* Появление текста при добавлении класса active */
+    opacity: 1;
+    /* Появление текста при добавлении класса active */
 }
 
 
 /* Появление линий при добавлении класса active */
 .line.active {
-    opacity: 1; 
-    transform: translateY(0); /* Восстанавливаем позицию */
+    opacity: 1;
+    transform: translateY(0);
+    /* Восстанавливаем позицию */
 }
 
 /* Появление кругов при добавлении класса active */
 .circle.active {
-    opacity: 1; 
+    opacity: 1;
     transform: scale(1);
-    box-shadow: 0 0 20px rgba(48, 24, 17, 0.5); /* Появление тени */
+    box-shadow: 0 0 20px rgba(48, 24, 17, 0.5);
+    /* Появление тени */
 }
 
 

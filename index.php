@@ -5,9 +5,6 @@ session_start();
 // Проверяем, авторизован ли администратор
 $isAdmin = isset($_SESSION['user']);
 
-// Определяем ссылки
-$userLink = "index.php"; // Ссылка для обычных пользователей
-$adminLink = "admin.php"; // Ссылка для администраторов
 ?>
 
 <!DOCTYPE html>
@@ -39,16 +36,15 @@ $adminLink = "admin.php"; // Ссылка для администраторов
                     <img src="logo.jpg" alt="Логотип" />
                 </div>
                 <div class="title">
-                    <h1>Бронирование</h1>
-                    <h1>квартир</h1>
+                    <h1>Бронирование квартир</h1>
                 </div>
             </div>
             <nav>
                 <div class="nav-container">
                     <ul class="nav-links">
-                        <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
-                        <li><a href="#map" onclick="scrollToSection('map')">Квартиры</a></li>
-                        <li><a href="#about" onclick="scrollToSection('about')">О брони</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                        <li><a href="#map">Квартиры</a></li>
+                        <li><a href="#about">О брони</a></li>
                     </ul>
                     <div class="search-container">
                         <input type="text" id="searchInput" placeholder="Поиск по имени, цене или описанию"
@@ -60,10 +56,11 @@ $adminLink = "admin.php"; // Ссылка для администраторов
         </div>
     </header>
 
+
     <?php
     // Подключение к базе данных
-    $pdo = new PDO('mysql:host=localhost;dbname=mysite', 'root', password: 'mysql');
-
+    require 'database.php';
+    
     // Запрос для получения информации о квартирах
     $sql = "SELECT * FROM flat";
     $stmt = $pdo->prepare($sql);
@@ -116,7 +113,8 @@ $adminLink = "admin.php"; // Ссылка для администраторов
                         <p><a href="<?php echo htmlspecialchars($apartment['SutochnoLink']); ?>" target="_blank">Перейти на
                                 Суточно.Ру</a></p>
                         <p></p>
-                        <button class="book-now" onclick="showBookingForm()">Забронировать</button>
+                        <button class="book-now"
+                            onclick="showBookingForm(<?php echo $apartment['ID']; ?>)">Забронировать</button>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -206,16 +204,17 @@ $adminLink = "admin.php"; // Ссылка для администраторов
                 <button onclick="markDatesAsOccupied()">Редактировать</button>
             </div>
             <form id="bookingForm" onsubmit="submitBookingForm(event)">
+                <input type="hidden" id="flatID" name="flatID"
+                    value="<?php echo htmlspecialchars($apartment['ID']); ?>">
                 <label for="name">ФИО:</label>
                 <input type="text" id="name" name="name" required>
                 <label for="phone">Номер телефона:</label>
                 <input type="tel" id="phone" name="phone" required oninput="formatPhoneNumber(this)">
-                <label for="date">Дата:</label>
-                <input type="date" id="date" name="date" required>
                 <label for="count">Количество человек:</label>
-                <input type="count" id="count" name="count" required oninput="formatCount(this)">
+                <input type="number" id="count" name="count" required oninput="formatCount(this)">
                 <button type="submit">Отправить</button>
             </form>
+
             <script>
                 function formatCount(input) {
                     // Удалить любые нецифровые символы

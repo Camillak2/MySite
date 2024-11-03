@@ -1,10 +1,18 @@
 <?php
 session_start();
 
-// Проверка, авторизован ли администратор
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header('Location: login.php'); // Перенаправление на страницу входа
-    exit;
+// Проверка, установлен ли файл куки
+if (!isset($_COOKIE['admin_access'])) {
+    header('Location: send_email.php');
+}
+
+// Проверка, установлен ли файл куки
+if (isset($_COOKIE['admin_access'])) {
+
+    if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+        header('Location: login.php'); // Перенаправление на страницу входа
+        exit;
+    }
 }
 ?>
 
@@ -78,7 +86,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бронирование квартир</title>
+    <title>Администраторская панель</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
 </head>
@@ -100,7 +108,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     <ul class="nav-links">
                         <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
                         <li><a href="#map" onclick="scrollToSection('map')">Квартиры</a></li>
-                        <li><a href="#about" onclick="scrollToSection('about')">О брони</a></li>
+                        <li><a href="bookings.php">Бронирования</a></li>
                     </ul>
                     <div class="search-container">
                         <input type="text" id="searchInput" placeholder="Поиск по имени, цене или описанию"
@@ -116,11 +124,50 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         function scrollToSection(sectionId) {
             document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
+
+        function filterApartments() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const apartmentCards = document.querySelectorAll('.apartment-card');
+            let count = 0;
+            let firstMatch = null; // Переменная для хранения первого совпадения
+
+            apartmentCards.forEach(card => {
+                const name = card.querySelector('h2').innerText.toLowerCase();
+                const description = card.querySelector('.description').innerText.toLowerCase();
+                const cost = card.querySelector('.description').children[7].innerText.toLowerCase(); // предполагаем, что стоимость находится в 8-м элементе
+
+                const matches = name.includes(filter) || description.includes(filter) || cost.includes(filter);
+
+                if (matches) {
+                    card.style.display = '';
+                    count++;
+                    card.classList.add('highlight'); // Подсветка совпадения
+                    setTimeout(() => {
+                        card.classList.remove('highlight'); // Удаляем подсветку через некоторое время
+                    }, 3000);
+
+                    // Запоминаем первое найденное совпадение
+                    if (!firstMatch) {
+                        firstMatch = card;
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('resultCount').innerText = `${count} из ${apartmentCards.length}`;
+
+            // Прокрутка к первому найденному элементу
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
     </script>
 
     <?php
     // Подключение к базе данных
-    $pdo = new PDO('mysql:host=localhost;dbname=mysite', 'root', 'mysql');
+    require 'database.php';
 
     // Запрос для получения информации о квартирах
     $sql = "SELECT * FROM flat";
@@ -129,7 +176,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     $apartments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
-    <div class="apartment-cards">
+    <img src="main_photo1.jpg" alt="Main Photo" class="main-photo">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <div id="map" class="apartment-cards">
         <?php foreach ($apartments as $apartment): ?>
             <div class="apartment-card">
                 <div class="carousel" data-current-slide="0">
@@ -155,10 +206,21 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     </div>
                 </div>
                 <div class="description">
-                    <h2><?= $apartment['Location'] ?></h2>
-                    <p>Тип: <?= $apartment['Name'] ?></p>
-                    <p>Цена: <span id="price-<?= $apartment['ID'] ?>"><?= $apartment['Cost'] ?></span> ₽</p>
-                    <p>Описание: <?= $apartment['Description'] ?></p>
+                    <h2><?= $apartment['Name'] ?></h2>
+                    <p>• <?= $apartment['Square'] ?> м² </p>
+                    <p><?= $apartment['Location'] ?></p>
+                    <p><?= $apartment['Metro'] ?></p>
+                    <p><?= $apartment['Description'] ?></p>
+                    <p>• ⁠Комфортное проживание до <?= $apartment['NumberOfPeople'] ?>
+                        человек.</p>
+                    <p><?= $apartment['Underwear'] ?></p>
+                    <p><?= $apartment['Device'] ?></p>
+                    <p>• <?= $apartment['Cost'] ?> руб.</p>
+                    <p>Адрес: <?= $apartment['Address'] ?></p>
+
+                    <p><a href="<?= $apartment['SutochnoLink'] ?>" target="_blank">Перейти на
+                            Суточно.Ру</a></p>
+                    <p></p>
                     <div class="button-container">
                         <button class="book-now" onclick="editCalendar(<?= $apartment['ID'] ?>)">Редактировать даты</button>
                         <button class="edit-button"
@@ -264,7 +326,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             });
         }        
     </script>
-
     <footer>
         <h2 id="contacts" class="footer-title">Контактная информация</h2>
         <div class="footer-content">
