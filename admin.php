@@ -36,13 +36,13 @@ if (isset($_COOKIE['admin_access'])) {
             });
         });
 
-        function editCalendar(apartmentId) {
-            $('#calendarModal').data('apartment-id', apartmentId).show();
-        }
-
-        function editPrice(apartmentId, currentPrice) {
+        function editPrice(apartmentId, newPriceWeekday, newPriceWeekend, newPriceWeekdayAdditional) {
+            console.log('Editing price for apartment:', apartmentId);
+            console.log('New Prices:', newPriceWeekday, newPriceWeekend, newPriceWeekdayAdditional);
             $('#priceModal').data('apartment-id', apartmentId).show();
-            $('#newPrice').val(currentPrice);
+            $('#newPriceWeekday').val(newPriceWeekday);
+            $('#newPriceWeekend').val(newPriceWeekend);
+            $('#newPriceWeekdayAdditional').val(newPriceWeekdayAdditional);
         }
 
         function closeModal(modalId) {
@@ -68,34 +68,21 @@ if (isset($_COOKIE['admin_access'])) {
                     newPriceWeekdayAdditional: newPriceWeekdayAdditional
                 }, function (response) {
                     if (response.success) {
-                        $('#price-' + apartmentId).text(newPrice);
+                        // Обновление цен в карточке
+                        $('#price-' + apartmentId + ' .weekday-price').text(newPriceWeekday);
+                        $('#price-' + apartmentId + ' .weekend-price').text(newPriceWeekend);
+                        $('#price-' + apartmentId + ' .additional-price').text(newPriceWeekdayAdditional);
                         closeModal('priceModal');
                     } else {
                         alert('Ошибка при сохранении цены.');
                     }
                 }, 'json');
+
             } else {
-                alert('Пожалуйста, введите корректное числовое значение.');
+                alert('Пожалуйста, введите корректные числовые значения для всех полей.');
             }
         }
 
-        function saveDates() {
-            var apartmentId = $('#calendarModal').data('apartment-id');
-            var checkInDate = $('#checkInDate').val();
-            var checkOutDate = $('#checkOutDate').val();
-            if (new Date(checkInDate) < new Date(checkOutDate)) {
-                $.post('update_dates.php', { apartmentId: apartmentId, checkInDate: checkInDate, checkOutDate: checkOutDate }, function (response) {
-                    if (response.success) {
-                        // Update the calendar view
-                        closeModal('calendarModal');
-                    } else {
-                        alert('Ошибка при сохранении дат.');
-                    }
-                }, 'json');
-            } else {
-                alert('Пожалуйста, введите корректные даты.');
-            }
-        }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,15 +99,14 @@ if (isset($_COOKIE['admin_access'])) {
                     <img src="logo.jpg" alt="Логотип" />
                 </div>
                 <div class="title">
-                    <h1>Бронирование</h1>
-                    <h1>квартир</h1>
+                    <h1>Бронирование квартир</h1>
                 </div>
             </div>
             <nav>
                 <div class="nav-container">
                     <ul class="nav-links">
-                        <li><a href="#contacts" onclick="scrollToSection('contacts')">Контакты</a></li>
-                        <li><a href="#map" onclick="scrollToSection('map')">Квартиры</a></li>
+                        <li><?php if (isset($_COOKIE['admin_access'])): ?><a href="index.php">Назад</a><?php endif; ?>
+                        </li>
                         <li><a href="bookings.php">Бронирования</a></li>
                     </ul>
                     <div class="search-container">
@@ -134,9 +120,6 @@ if (isset($_COOKIE['admin_access'])) {
     </header>
 
     <script>
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-        }
 
         function filterApartments() {
             const input = document.getElementById('searchInput');
@@ -188,8 +171,6 @@ if (isset($_COOKIE['admin_access'])) {
     $stmt->execute();
     $apartments = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
-
-    <img src="main_photo1.jpg" alt="Main Photo" class="main-photo">
     <link
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
         rel="stylesheet">
@@ -219,154 +200,55 @@ if (isset($_COOKIE['admin_access'])) {
                     </div>
                 </div>
                 <div class="description">
-                    <h2><?= $apartment['Name'] ?></h2>
-                    <p>• <?= $apartment['Square'] ?> м² </p>
-                    <p><?= $apartment['Location'] ?></p>
-                    <p><?= $apartment['Metro'] ?></p>
-                    <p><?= $apartment['Description'] ?></p>
-                    <p>• ⁠Комфортное проживание до <?= $apartment['NumberOfPeople'] ?>
+                    <h2><?php echo htmlspecialchars($apartment['Name']); ?></h2>
+                    <p>• <?php echo htmlspecialchars($apartment['Square']); ?> м²</p>
+                    <p><?php echo htmlspecialchars($apartment['Location']); ?></p>
+                    <p><?php echo htmlspecialchars($apartment['Metro']); ?></p>
+                    <p><?php echo htmlspecialchars($apartment['Description']); ?></p>
+                    <p>• ⁠Комфортное проживание до <?php echo htmlspecialchars($apartment['NumberOfPeople']); ?>
                         человек.</p>
-                    <p><?= $apartment['Underwear'] ?></p>
-                    <p><?= $apartment['Device'] ?></p>
-                    <p>• <?= $apartment['Cost'] ?> руб.</p>
-                    <p>Адрес: <?= $apartment['Address'] ?></p>
-
-                    <p><a href="<?= $apartment['SutochnoLink'] ?>" target="_blank">Перейти на
+                    <p><?php echo htmlspecialchars($apartment['Underwear']); ?></p>
+                    <p><?php echo htmlspecialchars($apartment['Device']); ?></p>
+                    <p>• <?php echo htmlspecialchars($apartment['Cost']); ?> рублей за сутки в будни.</p>
+                    <p>• <?php echo htmlspecialchars($apartment['CostWeekend']); ?> рублей за сутки в выходные.</p>
+                    <p>Доплата за каждого гостя <?php echo htmlspecialchars($apartment['Surcharge']); ?> рублей, если их
+                        количество превышает <?php echo htmlspecialchars($apartment['PeoplePay']); ?>.</p>
+                    <p>Адрес: <?php echo htmlspecialchars($apartment['Address']); ?></p>
+                    <p><a href="<?php echo htmlspecialchars($apartment['SutochnoLink']); ?>" target="_blank">Перейти на
                             Суточно.Ру</a></p>
                     <p></p>
                     <div class="button-container">
                         <button class="book-now" onclick="editCalendar(<?= $apartment['ID'] ?>)">Редактировать даты</button>
                         <button class="edit-button"
-                            onclick="editPrice(<?= $apartment['ID'] ?>, <?= $apartment['Cost'] ?>)">Редактировать
+                            onclick="editPrice(<?= $apartment['ID'] ?>, <?= $apartment['Cost'] ?>, <?= $apartment['CostWeekend'] ?>, <?= $apartment['Surcharge'] ?>)">Редактировать
                             цены</button>
                     </div>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
-
-    <!-- Modal для редактирования календаря -->
-    <div id="calendarModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('calendarModal')">&times;</span>
-            <h2>Редактировать даты</h2>
-            <input type="hidden" id="apartmentId">
-            <div class="calendar">
-                <label for="checkInDate">Дата заезда:</label>
-                <input type="date" id="checkInDate">
-                <label for="checkOutDate">Дата выезда:</label>
-                <input type="date" id="checkOutDate">
-                <button onclick="saveDates()">Сохранить</button>
-            </div>
-            <div id="calendarDisplay"></div>
-        </div>
-    </div>
-
     <!-- Modal для редактирования цены -->
     <div id="priceModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('priceModal')">&times;</span>
             <h2>Редактировать цены</h2>
-            <p><input type="number" id="newPriceWeekday" step="100" placeholder="Введите новую цену в будни"></p>
-            <p><input type="number" id="newPriceWeekend" step="100" placeholder="Введите новую цену в выходные"></p>
-            <p><input type="number" id="newPriceAdditional" step="50" placeholder="Введите новую цену для доплаты"></p>
+            <p>
+                <label for="newPriceWeekday">Новая цена в будни:</label>
+                <input type="number" id="newPriceWeekday" step="100" placeholder="Введите новую цену в будни">
+            </p>
+            <p>
+                <label for="newPriceWeekend">Новая цена в выходные:</label>
+                <input type="number" id="newPriceWeekend" step="100" placeholder="Введите новую цену в выходные">
+            </p>
+            <p>
+                <label for="newPriceWeekdayAdditional">Новая цена для доплаты:</label>
+                <input type="number" id="newPriceWeekdayAdditional" step="50"
+                    placeholder="Введите новую цену для доплаты">
+            </p>
+
             <button onclick="savePrice()">Сохранить</button>
         </div>
     </div>
-
-
-    <script>
-        function openCalendarModal(apartmentId) {
-            document.getElementById('apartmentId').value = apartmentId;
-            loadBookedDates(apartmentId);
-            document.getElementById('calendarModal').style.display = "block";
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = "none";
-        }
-
-        function saveDates() {
-            var apartmentId = document.getElementById('apartmentId').value;
-            var checkInDate = document.getElementById('checkInDate').value;
-            var checkOutDate = document.getElementById('checkOutDate').value;
-
-            $.ajax({
-                url: 'booking.php',
-                type: 'POST',
-                data: {
-                    apartmentId: apartmentId,
-                    checkInDate: checkInDate,
-                    checkOutDate: checkOutDate
-                },
-                success: function (response) {
-                    var result = JSON.parse(response);
-                    if (result.success) {
-                        alert('Даты успешно сохранены!');
-                        closeModal('calendarModal');
-                        loadBookedDates(apartmentId); // Обновить календарь
-                    } else {
-                        alert('Ошибка: ' + (result.message || 'Неизвестная ошибка'));
-                    }
-                }
-            });
-        }
-
-        function loadBookedDates(apartmentId) {
-            $.ajax({
-                url: 'get_booked_dates.php', // Создайте и реализуйте этот скрипт
-                type: 'GET',
-                data: {
-                    apartmentId: apartmentId
-                },
-                success: function (response) {
-                    var result = JSON.parse(response);
-                    if (result.success) {
-                        displayBookedDates(result.dates);
-                    } else {
-                        alert('Ошибка при загрузке забронированных дат');
-                    }
-                }
-            });
-        }
-
-        function displayBookedDates(dates) {
-            var calendarDisplay = document.getElementById('calendarDisplay');
-            calendarDisplay.innerHTML = '';
-
-            dates.forEach(function (date) {
-                var dateElement = document.createElement('div');
-                dateElement.classList.add('booked-date');
-                dateElement.innerText = date;
-                calendarDisplay.appendChild(dateElement);
-            });
-        }        
-    </script>
-    <footer>
-        <h2 id="contacts" class="footer-title">Контактная информация</h2>
-        <div class="footer-content">
-            <div class="contact-info">
-                <p><a href="tel:+79097660628">+7 909 766-06-28</a></p>
-                <p>Email: <a href="mailto:5347612@mail.ru">5347612@mail.ru</a></p>
-                <p>ИП Забелкина Л.И.</p>
-                <p>ИНН 165606525483</p>
-                <p>ОГРНИП 321169000046647</p>
-            </div>
-            <div class="social-icons">
-                <a href="https://t.me/posutkakazanarenda"><img src="/Networks/Telegram.png" alt="Telegram"></a>
-                <a href="https://api.whatsapp.com/send?phone=79097760628"><img src="/Networks/WhatsApp.png"
-                        alt="WhatsApp"></a>
-                <a href="https://vk.com/id728306440"><img src="/Networks/VK.png" alt="VKontakte"></a>
-                <a href="mailto:5347612@mail.ru"><img src="/Networks/Email.png" alt="Email"></a>
-            </div>
-            <?php if (isset($_COOKIE['admin_access'])): ?>
-                <div id="admin-login">
-                    <p><a href="logout.php">ВЫХОД ДЛЯ АДМИНИСТРАТОРА</a></p>
-                </div>
-            <?php endif; ?>
-        </div>
-    </footer>
-
 </body>
 
 </html>

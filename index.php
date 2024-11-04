@@ -41,6 +41,11 @@ $isAdmin = isset($_SESSION['user']);
             <nav>
                 <div class="nav-container">
                     <ul class="nav-links">
+                        <li>
+                            <?php if (isset($_COOKIE['admin_access'])): ?>
+                                <a href="login.php">Админка</a>
+                            <?php endif; ?>
+                        </li>
                         <li><a href="#contacts">Контакты</a></li>
                         <li><a href="#map">Квартиры</a></li>
                         <li><a href="#about">О брони</a></li>
@@ -54,22 +59,6 @@ $isAdmin = isset($_SESSION['user']);
             </nav>
         </div>
     </header>
-
-    <script>
-    // Функция плавной прокрутки к секции
-    function scrollToSection(sectionId) {
-        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Привязываем функцию к ссылкам
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function (event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение
-            const sectionId = this.getAttribute('href').substring(1); // Получаем ID секции
-            scrollToSection(sectionId); // Прокручиваем
-        });
-    });
-</script>
 
     <?php
     // Подключение к базе данных
@@ -203,15 +192,10 @@ $isAdmin = isset($_SESSION['user']);
                 <a href="https://vk.com/id728306440"><img src="/Networks/VK.png" alt="VKontakte"></a>
                 <a href="mailto:5347612@mail.ru"><img src="/Networks/Email.png" alt="Email"></a>
             </div>
-            <?php if (isset($_COOKIE['admin_access'])): ?>
-                <div id="admin-login">
-                    <p><a href="login.php">ВХОД ДЛЯ АДМИНИСТРАТОРА</a></p>
-                </div>
-            <?php endif; ?>
         </div>
     </footer>
 
-    <div id="booking-form" class="booking-form">
+    <div id="booking-form" class="booking-form" style="display: none;">
         <div class="form-content">
             <span class="close" onclick="closeBookingForm()">&times;</span>
             <h2>Забронировать</h2>
@@ -241,4 +225,5 @@ $isAdmin = isset($_SESSION['user']);
     <button class="prev" onclick="prevImage()">&#10094;</button>
     <button class="next" onclick="nextImage()">&#10095;</button>
 </div>
+
 </html>

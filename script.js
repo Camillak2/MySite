@@ -90,6 +90,7 @@ function prevImage() {
     document.getElementById("modalImage").src = images[currentImageIndex];
 }
 
+
 // Добавляем событие для навигации с помощью клавиш стрелок
 document.addEventListener("keydown", function (event) {
     const modal = document.getElementById("imageModal");
@@ -124,8 +125,55 @@ function searchApartments() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    initStepAnimation(); // Инициализируем анимацию этапов
+    initBookingButtons(); // Инициализируем кнопки бронирования
+    initCloseModal(); // Инициализируем кнопку закрытия модального окна
+    initAdminMode(); // Инициализируем режим администратора
+});
+
+// Функция для анимации этапов
+function initStepAnimation() {
+    const lines = document.querySelectorAll('.line');
+    const circles = document.querySelectorAll('.circle');
+    const texts = document.querySelectorAll('.circle-item p'); // Получаем тексты этапов
+    let delay = 0;
+
+    // Сначала активируем линии, кружки и текст поочередно
+    for (let i = 0; i < circles.length; i++) {
+        // Активируем линию
+        setTimeout(() => {
+            if (lines[i]) {
+                lines[i].classList.add('active');
+            }
+        }, delay);
+
+        // Увеличиваем задержку перед следующим элементом
+        delay += 300; // 300 миллисекунд задержки для линии
+
+        // Активируем круг
+        setTimeout(() => {
+            if (circles[i]) {
+                circles[i].classList.add('active');
+            }
+        }, delay);
+
+        // Увеличиваем задержку перед следующим элементом
+        delay += 300; // 300 миллисекунд задержки для круга
+
+        // Активируем текст этапа
+        setTimeout(() => {
+            if (texts[i]) {
+                texts[i].classList.add('active'); // Можно добавить класс для анимации текста, если требуется
+            }
+        }, delay);
+
+        // Увеличиваем задержку перед следующим элементом
+        delay += 300; // 300 миллисекунд задержки для текста
+    }
+}
+
 function showBookingFormFromButton(button) {
-    //document.getElementById('booking-form').style.display = 'flex'; // Открываем модальное окно
     // Получаем flatID из data-атрибута кнопки
     const flatID = button.getAttribute('data-id');
     console.log('Flat ID for booking:', flatID);
@@ -136,17 +184,51 @@ function showBookingFormFromButton(button) {
     console.log('Flat ID set in form:', document.getElementById('flatID').value);
 }
 
-function closeBookingForm() {
-    document.getElementById('booking-form').style.display = 'none'; // Закрываем модальное окно
+// Функция для закрытия модального окна
+function initCloseModal() {
+    const closeModalButton = document.querySelector('.close');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', closeBookingForm);
+    }
 }
 
-// Вызываем функцию при нажатии кнопки "Забронировать"
-document.querySelectorAll('.book-now').forEach(button => {
-    button.addEventListener('click', showBookingForm);
-});
+// Функция закрытия формы бронирования (предполагается, что она уже определена)
+function closeBookingForm() {
+    const bookingForm = document.getElementById('bookingForm');
+    bookingForm.style.display = 'none'; // Скрываем форму
+}
 
-// Закрытие модального окна при нажатии на крестик
-document.querySelector('.close').addEventListener('click', closeBookingForm);
+
+// Функция для переключения режима администратора
+function initAdminMode() {
+    let isAdminMode = false;
+    const occupiedDates = new Set(); // Множество для занятых дат
+
+    const adminToggleButton = document.getElementById('admin-toggle'); // Предположим, что у вас есть такая кнопка
+    if (adminToggleButton) {
+        adminToggleButton.addEventListener('click', toggleAdminMode);
+    }
+
+    function toggleAdminMode() {
+        isAdminMode = !isAdminMode;
+        const adminCalendar = document.getElementById('admin-calendar');
+        if (adminCalendar) {
+            adminCalendar.style.display = isAdminMode ? 'block' : 'none';
+            if (isAdminMode) {
+                createCalendar(); // Предполагаем, что эта функция определена
+            }
+        }
+    }
+}
+
+// Пример реализации функции closeBookingForm
+function closeBookingForm() {
+    console.log("Закрыть форму бронирования"); // Для отладки
+    const bookingModal = document.getElementById('booking-form'); // Убедитесь, что ID корректен
+    if (bookingModal) {
+        bookingModal.style.display = 'none'; // Логика закрытия формы
+    }
+}
 
 
 let isAdminMode = false; // Track if admin mode is on
@@ -233,45 +315,7 @@ function formatPhoneNumber(input) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const lines = document.querySelectorAll('.line');
-    const circles = document.querySelectorAll('.circle');
-    const texts = document.querySelectorAll('.circle-item p'); // Получаем тексты этапов
-    let delay = 0;
 
-    // Сначала активируем линии, кружки и текст поочередно
-    for (let i = 0; i < circles.length; i++) {
-        // Активируем линию
-        setTimeout(() => {
-            if (lines[i]) {
-                lines[i].classList.add('active');
-            }
-        }, delay);
-
-        // Увеличиваем задержку перед следующим элементом
-        delay += 300; // 1 секунда задержки для линии
-
-        // Активируем круг
-        setTimeout(() => {
-            if (circles[i]) {
-                circles[i].classList.add('active');
-            }
-        }, delay);
-
-        // Увеличиваем задержку перед следующим элементом
-        delay += 300; // 1 секунда задержки для круга
-
-        // Активируем текст этапа
-        setTimeout(() => {
-            if (texts[i]) {
-                texts[i].classList.add('active'); // Можно добавить класс для анимации текста, если требуется
-            }
-        }, delay);
-
-        // Увеличиваем задержку перед следующим элементом
-        delay += 300; // 1 секунда задержки для текста
-    }
-});
 
 
 function filterApartments() {
@@ -397,7 +441,7 @@ function editCalendar(reservationId) {
     });
 
     // Save dates when button clicked
-    $("#saveDates").off('click').on('click', function() {
+    $("#saveDates").off('click').on('click', function () {
         const checkinDate = $("#checkin").val();
         const checkoutDate = $("#checkout").val();
 
@@ -413,7 +457,7 @@ function editCalendar(reservationId) {
             id: reservationId,
             checkin: checkinDate,
             checkout: checkoutDate
-        }, function(response) {
+        }, function (response) {
             console.log(response); // Log the response from the server
             if (response.success) {
                 location.reload(); // Reload to see the changes
@@ -422,4 +466,9 @@ function editCalendar(reservationId) {
             }
         }, 'json');
     });
+}
+
+// Функция плавной прокрутки к секции
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
 }

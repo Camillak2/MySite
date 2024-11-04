@@ -128,12 +128,92 @@ $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <!-- Modal для редактирования календаря -->
+        <div id="calendarModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('calendarModal')">&times;</span>
+                <h2>Редактировать даты</h2>
+                <input type="hidden" id="apartmentId">
+                <div class="calendar">
+                    <label for="checkInDate">Дата заезда:</label>
+                    <input type="date" id="checkInDate">
+                    <label for="checkOutDate">Дата выезда:</label>
+                    <input type="date" id="checkOutDate">
+                    <button onclick="saveDates()">Сохранить</button>
+                </div>
+                <div id="calendarDisplay"></div>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        window.onload = function () {
-            document.querySelector('.main-photo').classList.add('show');
-        };
+        function openCalendarModal(apartmentId) {
+            document.getElementById('apartmentId').value = apartmentId;
+            loadBookedDates(apartmentId);
+            document.getElementById('calendarModal').style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function saveDates() {
+            var apartmentId = document.getElementById('apartmentId').value;
+            var checkInDate = document.getElementById('checkInDate').value;
+            var checkOutDate = document.getElementById('checkOutDate').value;
+
+            $.ajax({
+                url: 'booking.php',
+                type: 'POST',
+                data: {
+                    apartmentId: apartmentId,
+                    checkInDate: checkInDate,
+                    checkOutDate: checkOutDate
+                },
+                success: function (response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        alert('Даты успешно сохранены!');
+                        closeModal('calendarModal');
+                        loadBookedDates(apartmentId); // Обновить календарь
+                    } else {
+                        alert('Ошибка: ' + (result.message || 'Неизвестная ошибка'));
+                    }
+                }
+            });
+        }
+
+        function loadBookedDates(apartmentId) {
+            $.ajax({
+                url: 'get_booked_dates.php', // Создайте и реализуйте этот скрипт
+                type: 'GET',
+                data: {
+                    apartmentId: apartmentId
+                },
+                success: function (response) {
+                    var result = JSON.parse(response);
+                    if (result.success) {
+                        displayBookedDates(result.dates);
+                    } else {
+                        alert('Ошибка при загрузке забронированных дат');
+                    }
+                }
+            });
+        }
+
+        function displayBookedDates(dates) {
+            var calendarDisplay = document.getElementById('calendarDisplay');
+            calendarDisplay.innerHTML = '';
+
+            dates.forEach(function (date) {
+                var dateElement = document.createElement('div');
+                dateElement.classList.add('booked-date');
+                dateElement.innerText = date;
+                calendarDisplay.appendChild(dateElement);
+            });
+        }        
     </script>
     <link
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
