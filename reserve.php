@@ -23,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Запись данных для отладки
     file_put_contents('log.txt', print_r($_POST, true)); // Логируем входящие данные
+    //file_put_contents('log.txt', "POST flatID: " . $_POST['flatID'] . "\n", FILE_APPEND);
+
 
     // Подготовка SQL-запроса для вставки данных в таблицу reservation
     $sql = "INSERT INTO reservation (Name, PhoneNumber, CountPeople, ID_flat) VALUES (:name, :phone, :countPeople, :flatID)";
@@ -45,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $flat = $stmt->fetch(PDO::FETCH_OBJ);
 
         $mail->isSMTP();
+        $mail->CharSet = 'UTF-8';
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'bronirovanie.kvartir.kazan@gmail.com';
@@ -52,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('kamilla.sagdieva@gmail.com', 'Эмиль');
+        $mail->setFrom('kamilla.sagdieva@gmail.com', 'Бронирование квартир');
         $mail->addAddress('kamilla.sagdieva@gmail.com');
 
         $mail->Subject = 'Новое бронирование!';

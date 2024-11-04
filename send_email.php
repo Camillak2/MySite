@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
         }
 
         .container {
-            background-color: #fff4f4;
+            background-color: #EBDCC8;
             border: 1px solid #ffd6d6;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -91,13 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
         }
 
         h2 {
-            color: #301811;
+            color: #4b280a;
             font-size: 1.6em;
             margin-top: 0;
         }
 
         .message {
-            color: #4caf50;
+            color: #1a501c;
             font-size: 1em;
             margin-bottom: 15px;
         }
@@ -112,14 +113,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #ffd6d6;
+            border: 1px solid #4b280a;
             border-radius: 5px;
             box-sizing: border-box;
             font-size: 1em;
+            background-color: #f8efe1;
         }
 
         button {
-            background-color: #f5a1a7;
+            background-color: #4b280a;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -131,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
         }
 
         button:hover {
-            background-color: #d58a94;
+            background-color: #301811;
         }
 
         .error {
@@ -160,4 +162,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['code'])) {
         </form>
     </div>
 </body>
+
 </html>

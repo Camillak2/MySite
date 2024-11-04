@@ -6,7 +6,7 @@ if (!isset($_COOKIE['admin_access'])) {
     header('Location: send_email.php');
 }
 
-// Проверка, установлен ли файл куки
+// Проверка, авторизирован ли админ
 if (isset($_COOKIE['admin_access'])) {
 
     if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
@@ -51,9 +51,22 @@ if (isset($_COOKIE['admin_access'])) {
 
         function savePrice() {
             var apartmentId = $('#priceModal').data('apartment-id');
-            var newPrice = $('#newPrice').val();
-            if (!isNaN(newPrice) && newPrice > 0) {
-                $.post('update_price.php', { apartmentId: apartmentId, newPrice: newPrice }, function (response) {
+            var newPriceWeekday = $('#newPriceWeekday').val();
+            var newPriceWeekend = $('#newPriceWeekend').val();
+            var newPriceWeekdayAdditional = $('#newPriceWeekdayAdditional').val();
+
+            // Проверка всех значений перед отправкой
+            if (!isNaN(newPriceWeekday) && newPriceWeekday > 0 &&
+                !isNaN(newPriceWeekend) && newPriceWeekend > 0 &&
+                !isNaN(newPriceWeekdayAdditional) && newPriceWeekdayAdditional > 0) {
+
+                // Один запрос на сервер для всех трех значений
+                $.post('update_price.php', {
+                    apartmentId: apartmentId,
+                    newPriceWeekday: newPriceWeekday,
+                    newPriceWeekend: newPriceWeekend,
+                    newPriceWeekdayAdditional: newPriceWeekdayAdditional
+                }, function (response) {
                     if (response.success) {
                         $('#price-' + apartmentId).text(newPrice);
                         closeModal('priceModal');
@@ -225,7 +238,7 @@ if (isset($_COOKIE['admin_access'])) {
                         <button class="book-now" onclick="editCalendar(<?= $apartment['ID'] ?>)">Редактировать даты</button>
                         <button class="edit-button"
                             onclick="editPrice(<?= $apartment['ID'] ?>, <?= $apartment['Cost'] ?>)">Редактировать
-                            цену</button>
+                            цены</button>
                     </div>
                 </div>
             </div>
@@ -253,11 +266,14 @@ if (isset($_COOKIE['admin_access'])) {
     <div id="priceModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('priceModal')">&times;</span>
-            <h2>Редактировать цену</h2>
-            <input type="number" id="newPrice" step="0.01" placeholder="Введите новую цену">
+            <h2>Редактировать цены</h2>
+            <p><input type="number" id="newPriceWeekday" step="100" placeholder="Введите новую цену в будни"></p>
+            <p><input type="number" id="newPriceWeekend" step="100" placeholder="Введите новую цену в выходные"></p>
+            <p><input type="number" id="newPriceAdditional" step="50" placeholder="Введите новую цену для доплаты"></p>
             <button onclick="savePrice()">Сохранить</button>
         </div>
     </div>
+
 
     <script>
         function openCalendarModal(apartmentId) {

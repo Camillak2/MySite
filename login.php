@@ -2,6 +2,10 @@
 session_start();
 require 'database.php';
 
+// Проверка, установлен ли файл куки
+if (!isset($_COOKIE['admin_access'])) {
+    header('Location: send_email.php');
+}
 // Проверка, если администратор уже авторизован
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     header('Location: admin.php');  // Перенаправление на страницу админа
@@ -38,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9ecec;
-            color: #333;
+            background-color: #D8C7AD;
+            color: #301811;
             margin: 0;
             padding: 0;
             display: flex;
@@ -49,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .container {
-            background-color: #fff4f4;
+            background-color: #EBDCC8;
             border: 1px solid #ffd6d6;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -59,7 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         h2 {
-            color: #d58a94;
+            color: #4b280a;
+            font-size: 1.6em;
+            margin-top: 0;
         }
 
         label {
@@ -73,13 +79,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #ffd6d6;
+            border: 1px solid #4b280a;
             border-radius: 5px;
             box-sizing: border-box;
+            background-color: #f8efe1;
         }
 
         button {
-            background-color: #f5a1a7;
+            background-color: #4b280a;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -89,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         button:hover {
-            background-color: #d58a94;
+            background-color: #301811;
         }
 
         .error {

@@ -4,7 +4,6 @@ session_start();
 
 // Проверяем, авторизован ли администратор
 $isAdmin = isset($_SESSION['user']);
-
 ?>
 
 <!DOCTYPE html>
@@ -56,11 +55,26 @@ $isAdmin = isset($_SESSION['user']);
         </div>
     </header>
 
+    <script>
+    // Функция плавной прокрутки к секции
+    function scrollToSection(sectionId) {
+        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Привязываем функцию к ссылкам
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение
+            const sectionId = this.getAttribute('href').substring(1); // Получаем ID секции
+            scrollToSection(sectionId); // Прокручиваем
+        });
+    });
+</script>
 
     <?php
     // Подключение к базе данных
     require 'database.php';
-    
+
     // Запрос для получения информации о квартирах
     $sql = "SELECT * FROM flat";
     $stmt = $pdo->prepare($sql);
@@ -108,13 +122,17 @@ $isAdmin = isset($_SESSION['user']);
                             человек.</p>
                         <p><?php echo htmlspecialchars($apartment['Underwear']); ?></p>
                         <p><?php echo htmlspecialchars($apartment['Device']); ?></p>
-                        <p>• <?php echo htmlspecialchars($apartment['Cost']); ?> руб.</p>
+                        <p>• <?php echo htmlspecialchars($apartment['Cost']); ?> рублей за сутки в будни.</p>
+                        <p>• <?php echo htmlspecialchars($apartment['CostWeekend']); ?> рублей за сутки в выходные.</p>
+                        <p>Доплата за каждого гостя <?php echo htmlspecialchars($apartment['Surcharge']); ?> рублей, если их
+                            количество превышает <?php echo htmlspecialchars($apartment['PeoplePay']); ?>.</p>
                         <p>Адрес: <?php echo htmlspecialchars($apartment['Address']); ?></p>
                         <p><a href="<?php echo htmlspecialchars($apartment['SutochnoLink']); ?>" target="_blank">Перейти на
                                 Суточно.Ру</a></p>
                         <p></p>
-                        <button class="book-now"
-                            onclick="showBookingForm(<?php echo $apartment['ID']; ?>)">Забронировать</button>
+                        <button class="book-now" data-id="<?php echo htmlspecialchars($apartment['ID']); ?>"
+                            onclick="showBookingFormFromButton(this)">Забронировать</button>
+
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -197,15 +215,13 @@ $isAdmin = isset($_SESSION['user']);
         <div class="form-content">
             <span class="close" onclick="closeBookingForm()">&times;</span>
             <h2>Забронировать</h2>
-            <!-- Calendar Section for Admin -->
             <div id="admin-calendar" style="display: none;">
                 <h3>Выберите даты для занятости:</h3>
                 <div id="calendar"></div>
                 <button onclick="markDatesAsOccupied()">Редактировать</button>
             </div>
             <form id="bookingForm" onsubmit="submitBookingForm(event)">
-                <input type="hidden" id="flatID" name="flatID"
-                    value="<?php echo htmlspecialchars($apartment['ID']); ?>">
+                <input type="hidden" name="flatID" id="flatID"> <!-- Скрытое поле для ID квартиры -->
                 <label for="name">ФИО:</label>
                 <input type="text" id="name" name="name" required>
                 <label for="phone">Номер телефона:</label>
@@ -215,23 +231,14 @@ $isAdmin = isset($_SESSION['user']);
                 <button type="submit">Отправить</button>
             </form>
 
-            <script>
-                function formatCount(input) {
-                    // Удалить любые нецифровые символы
-                    input.value = input.value.replace(/\D/g, '');
-
-                    // Проверка на пустое поле
-                    if (input.value === '') {
-                        input.setCustomValidity('Пожалуйста, введите количество человек.');
-                    } else {
-                        input.setCustomValidity('');
-                    }
-                }
-            </script>
-
         </div>
     </div>
     <script src="script.js"></script>
 </body>
-
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeImageModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <button class="prev" onclick="prevImage()">&#10094;</button>
+    <button class="next" onclick="nextImage()">&#10095;</button>
+</div>
 </html>

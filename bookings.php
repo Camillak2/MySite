@@ -113,18 +113,6 @@ $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="apartment-cards">
             <?php foreach ($reservations as $reservation): ?>
                 <div class="apartment-card">
-                    <div class="carousel" data-current-slide="0">
-                        <div class="carousel-images">
-                            <?php
-                            // Разделяем пути к фотографиям по запятой и выводим каждое фото
-                            $photos = explode(', ', $reservation['Photo_path']);
-                            foreach ($photos as $photo):
-                                ?>
-                                <img src="<?php echo 'flats/' . trim($photo); ?>"
-                                    alt="<?php echo htmlspecialchars($reservation['Name']); ?>">
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
                     <div class="description">
                         <h2><?= $reservation['user_name'] ?></h2>
                         <p><?= $reservation['user_phone'] ?></p>
@@ -135,9 +123,6 @@ $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="button-container">
                             <button class="book-now" onclick="editCalendar(<?= $reservation['ID'] ?>)">Редактировать
                                 даты</button>
-                            <button class="edit-button"
-                                onclick="editPrice(<?= $reservation['ID'] ?>, <?= $reservation['Cost'] ?>)">Редактировать
-                                цену</button>
                         </div>
                     </div>
                 </div>

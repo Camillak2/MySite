@@ -48,47 +48,71 @@ function prevSlide(button) {
     showSlide(carousel, currentSlide - 1);
 }
 
-// Модальное окно для увеличения изображений
-const modal = document.createElement('div');
-modal.classList.add('modal');
-modal.innerHTML = `
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modal-img">
-    <a class="prev" onclick="changeModalSlide(-1)">&#10094;</a>
-    <a class="next" onclick="changeModalSlide(1)">&#10095;</a>
-`;
-document.body.appendChild(modal);
 
-let currentModalSlideIndex = 0;
-let currentModalCarousel = null;
 
-function openModal(event) {
-    const carousel = event.target.closest('.carousel');
-    const slides = carousel.querySelectorAll('.carousel-images img');
-    const modalImg = document.getElementById('modal-img');
-    currentModalSlideIndex = Array.from(slides).indexOf(event.target);
-    currentModalCarousel = carousel;
-    modal.style.display = 'block';
-    modalImg.src = event.target.src;
+let currentImageIndex = 0;
+let images = [];
+
+// Открытие модального окна с первым изображением
+function openImageModal(imageSrc, imageArray) {
+    images = imageArray;
+    currentImageIndex = images.indexOf(imageSrc); // Устанавливаем индекс текущего изображения
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+
+    modal.style.display = "block";
+    modalImage.src = images[currentImageIndex];
 }
 
-function closeModal() {
-    modal.style.display = 'none';
+// Закрытие модального окна
+function closeImageModal() {
+    const modal = document.getElementById("imageModal");
+    modal.style.display = "none";
 }
 
-function changeModalSlide(direction) {
-    const slides = currentModalCarousel.querySelectorAll('.carousel-images img');
-    currentModalSlideIndex += direction;
-
-    if (currentModalSlideIndex >= slides.length) {
-        currentModalSlideIndex = 0;
-    } else if (currentModalSlideIndex < 0) {
-        currentModalSlideIndex = slides.length - 1;
+// Функция для показа следующего изображения
+function nextImage() {
+    if (currentImageIndex < images.length - 1) {
+        currentImageIndex++;
+    } else {
+        currentImageIndex = 0; // Возвращаемся к первому изображению
     }
-
-    const modalImg = document.getElementById('modal-img');
-    modalImg.src = slides[currentModalSlideIndex].src;
+    document.getElementById("modalImage").src = images[currentImageIndex];
 }
+
+// Функция для показа предыдущего изображения
+function prevImage() {
+    if (currentImageIndex > 0) {
+        currentImageIndex--;
+    } else {
+        currentImageIndex = images.length - 1; // Переходим к последнему изображению
+    }
+    document.getElementById("modalImage").src = images[currentImageIndex];
+}
+
+// Добавляем событие для навигации с помощью клавиш стрелок
+document.addEventListener("keydown", function (event) {
+    const modal = document.getElementById("imageModal");
+    if (modal.style.display === "block") { // Проверяем, открыто ли модальное окно
+        if (event.key === "ArrowRight") {
+            nextImage();
+        } else if (event.key === "ArrowLeft") {
+            prevImage();
+        } else if (event.key === "Escape") {
+            closeImageModal();
+        }
+    }
+});
+
+// Привязываем функцию к каждому изображению в карусели для открытия модального окна
+document.querySelectorAll('.carousel-images img').forEach(img => {
+    img.addEventListener('click', function () {
+        const carouselImages = Array.from(this.closest('.carousel-images').querySelectorAll('img')).map(img => img.src);
+        openImageModal(this.src, carouselImages);
+    });
+});
+
+
 
 // Функция поиска квартир
 function searchApartments() {
@@ -100,9 +124,16 @@ function searchApartments() {
     });
 }
 
-// JavaScript для управления формой бронирования
-function showBookingForm() {
-    document.getElementById('booking-form').style.display = 'flex'; // Открываем модальное окно
+function showBookingFormFromButton(button) {
+    //document.getElementById('booking-form').style.display = 'flex'; // Открываем модальное окно
+    // Получаем flatID из data-атрибута кнопки
+    const flatID = button.getAttribute('data-id');
+    console.log('Flat ID for booking:', flatID);
+
+    const bookingForm = document.getElementById('booking-form');
+    bookingForm.style.display = 'block';
+    document.getElementById('flatID').value = flatID;
+    console.log('Flat ID set in form:', document.getElementById('flatID').value);
 }
 
 function closeBookingForm() {
@@ -186,10 +217,6 @@ function markDatesAsOccupied() {
     alert("Даты успешно отмечены как занятые!");
 }
 
-function closeBookingForm() {
-    document.getElementById('booking-form').style.display = 'none';
-}
-
 function formatPhoneNumber(input) {
     let phoneNumber = input.value.replace(/\D/g, ''); // Удаляем все нецифровые символы
 
@@ -204,6 +231,7 @@ function formatPhoneNumber(input) {
     // Добавляем маску
     input.value = `+7(${phoneNumber.substring(startIndex, startIndex + 3)}) ${phoneNumber.substring(startIndex + 3, startIndex + 6)}-${phoneNumber.substring(startIndex + 6, startIndex + 8)}-${phoneNumber.substring(startIndex + 8, startIndex + 10)}`;
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const lines = document.querySelectorAll('.line');
@@ -285,10 +313,6 @@ function filterApartments() {
     }
 }
 
-function scrollToSection(sectionId) {
-    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-}
-
 $(document).ready(function () {
     // Add smooth scrolling to all links
     $("a").on('click', function (event) {
@@ -351,4 +375,51 @@ function submitBookingForm(event) {
             console.error('Error:', error);
             alert('Произошла ошибка. Попробуйте еще раз.');
         });
+}
+
+function formatCount(input) {
+    // Удалить любые нецифровые символы
+    input.value = input.value.replace(/\D/g, '');
+
+    // Проверка на пустое поле
+    if (input.value === '') {
+        input.setCustomValidity('Пожалуйста, введите количество человек.');
+    } else {
+        input.setCustomValidity('');
+    }
+}
+
+function editCalendar(reservationId) {
+    // Open the modal
+    $("#dateSelectionModal").dialog({
+        modal: true,
+        width: 400
+    });
+
+    // Save dates when button clicked
+    $("#saveDates").off('click').on('click', function() {
+        const checkinDate = $("#checkin").val();
+        const checkoutDate = $("#checkout").val();
+
+        // Log data being sent
+        console.log({
+            id: reservationId,
+            checkin: checkinDate,
+            checkout: checkoutDate
+        });
+
+        // Send the selected dates to the server
+        $.post('update_dates.php', {
+            id: reservationId,
+            checkin: checkinDate,
+            checkout: checkoutDate
+        }, function(response) {
+            console.log(response); // Log the response from the server
+            if (response.success) {
+                location.reload(); // Reload to see the changes
+            } else {
+                alert('Ошибка при сохранении дат: ' + response.error);
+            }
+        }, 'json');
+    });
 }

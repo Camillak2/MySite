@@ -201,7 +201,6 @@ nav ul li a {
     }
 }
 
-
 .main-photo {
     width: 100%;
     height: auto;
@@ -256,6 +255,9 @@ nav ul li a {
     width: 100%;
     height: 300px;
     object-fit: cover;
+    /* Сохраняет пропорции изображения и заполняет контейнер */
+    flex-shrink: 0;
+    /* Не позволяет изображению уменьшаться */
 }
 
 .carousel-circles {
@@ -285,7 +287,6 @@ nav ul li a {
     box-shadow: 0 0 10px rgba(250, 200, 200, 0.1);
 }
 
-
 .modal {
     display: none;
     position: fixed;
@@ -298,6 +299,8 @@ nav ul li a {
     overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
+    animation: fadeIn 0.3s ease;
+    /* Плавная анимация */
 }
 
 .modal-content {
@@ -307,69 +310,89 @@ nav ul li a {
     max-width: 900px;
 }
 
+/* Стили для кнопок навигации */
 .modal .prev,
 .modal .next {
     cursor: pointer;
     position: absolute;
     top: 50%;
+    /* Выравнивание по вертикали */
     width: auto;
     padding: 16px;
-    margin-top: -50px;
-    color: white;
+    margin-top: -22px;
+    /* Центрирование кнопок */
+    color: 301811;
+    /* Цвет символов в кнопках */
     font-weight: bold;
-    font-size: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-    opacity: 0.6;
+    font-size: 30px;
+    transition: background-color 0.3s, opacity 0.3s;
+    /* Плавное изменение фона и прозрачности */
+    border: none;
+    background-color:  white;
+    /* Коричневый цвет с прозрачностью */
+    border-radius: 20%;
+    /* Закругление углов */
+}
+
+.modal .prev {
+    left: 20px;
+    /* Ближе к фото */
+}
+
+.modal .next {
+    right: 20px;
+    /* Ближе к фото */
 }
 
 .modal .prev:hover,
 .modal .next:hover {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #EFBAA7(139, 69, 19, 0.7);
+    /* Меньшая прозрачность при наведении */
 }
 
-.modal .prev {
-    left: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-.modal .next {
-    right: 0;
-    border-radius: 0 3px 3px 0;
-}
-
+/* Стили для закрытия модального окна */
 .modal .close {
     position: absolute;
-    top: 15px;
+    top: 20px;
+    /* Ближе к фото */
     right: 35px;
-    color: #f1f1f1;
+    color: #301811;
+    /* Цвет крестика */
     font-size: 40px;
     font-weight: bold;
-    transition: 0.3s;
+    transition: background-color 0.3s;
+    border-radius: 20%;
 }
 
 .modal .close:hover,
 .modal .close:focus {
-    color: #bbb;
+    background-color: #EFBAA7;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Стили для изображения в модальном окне */
+.modal img {
+    display: block;
+    /* Отображение изображения как блочного элемента */
+    margin: auto;
+    /* Центрирование изображения */
+    max-width: 100%;
+    /* Ограничение ширины */
+    max-height: 100%;
+    /* Ограничение высоты */
+    border-radius: 10px;
+    /* Закругление углов изображения */
 }
 
 .prev,
 .next {
     border: none;
-    color: white;
     padding: 10px 15px;
     font-size: 20px;
     cursor: pointer;
     border-radius: 20%;
     transition: background-color 0.3s;
-}
-
-.prev,
-.next {
     position: absolute;
     opacity: 0.8;
     top: 50%;
@@ -392,7 +415,6 @@ nav ul li a {
 .next {
     right: 10px;
 }
-
 
 .description {
     padding: 20px;
@@ -732,17 +754,34 @@ footer {
 
 /* Стиль для формы */
 .booking-form {
+    display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Полная ширина */
+    height: 100%;
+    /* Полная высота */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Полупрозрачный фон */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Контейнер для содержимого окна с id #priceModal */
+#booking-form .form-content {
+    background-color: #D8C7AD;
+    margin: 10% auto;
+    /* Центрирование окна */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 350px;
-    display: none;
+    max-width: 400px;
+    /* Ограничение ширины */
+    position: relative;
+    /* Относительное позиционирование для крестика */
+    box-shadow: 0 4px 8px #301811(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+    /* Плавная анимация */
 }
 
 .form-content {
@@ -777,6 +816,7 @@ label {
 
 input[type="text"],
 input[type="tel"],
+input[type="number"],
 input[type="date"],
 input[type="count"] {
     width: 100%;
@@ -814,4 +854,106 @@ button[type="submit"]:hover {
     padding: 5px;
     border-radius: 5px;
     margin: 5px 0;
+}
+
+/* Основные стили для модального окна с id #priceModal */
+#priceModal.modal {
+    display: none;
+    /* Скрыто по умолчанию */
+    position: fixed;
+    /* Фиксированное позиционирование */
+    z-index: 1000;
+    /* Важно, чтобы было поверх всего */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Полная ширина */
+    height: 100%;
+    /* Полная высота */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Полупрозрачный фон */
+}
+
+/* Контейнер для содержимого окна с id #priceModal */
+#priceModal .modal-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
+    /* Центрирование окна */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    /* Ограничение ширины */
+    position: relative;
+    /* Относительное позиционирование для крестика */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+    /* Плавная анимация */
+}
+
+/* Заголовок модального окна */
+#priceModal .modal-content h2 {
+    font-size: 24px;
+    margin: 0 0 15px;
+    color: #333;
+    text-align: center;
+}
+
+/* Поля ввода */
+#priceModal .modal-content input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Кнопка закрытия */
+#priceModal .close {
+    color: #aaa;
+    position: absolute;
+    /* Абсолютное позиционирование для размещения в углу */
+    top: 10px;
+    /* Отступ сверху */
+    right: 15px;
+    /* Отступ справа */
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#priceModal .close:hover,
+#priceModal .close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Кнопка сохранения */
+#priceModal .modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#priceModal .modal-content button:hover {
+    background-color: #45a049;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
