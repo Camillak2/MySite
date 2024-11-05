@@ -95,10 +95,8 @@ $isAdmin = isset($_SESSION['user']);
                             <button class="next" onclick="nextSlide(this)">&#10095;</button>
                         </div>
                         <div class="carousel-circles">
-                            <?php for ($i = 0; $i < count($photos); $i++): ?>
-                                <span class="circle <?php echo $i === 0 ? 'active' : ''; ?>"
-                                    onclick="setSlide(this, <?php echo $i; ?>)"></span>
-                            <?php endfor; ?>
+                            <span class="circle <?php echo $i === 0 ? 'active' : ''; ?>"
+                            display="none"></span>
                         </div>
                     </div>
                     <div class="description">

@@ -55,33 +55,33 @@ if (isset($_COOKIE['admin_access'])) {
             var newPriceWeekend = $('#newPriceWeekend').val();
             var newPriceWeekdayAdditional = $('#newPriceWeekdayAdditional').val();
 
-            // Проверка всех значений перед отправкой
-            if (!isNaN(newPriceWeekday) && newPriceWeekday > 0 &&
-                !isNaN(newPriceWeekend) && newPriceWeekend > 0 &&
-                !isNaN(newPriceWeekdayAdditional) && newPriceWeekdayAdditional > 0) {
-
-                // Один запрос на сервер для всех трех значений
-                $.post('update_price.php', {
-                    apartmentId: apartmentId,
-                    newPriceWeekday: newPriceWeekday,
-                    newPriceWeekend: newPriceWeekend,
-                    newPriceWeekdayAdditional: newPriceWeekdayAdditional
-                }, function (response) {
-                    if (response.success) {
-                        // Обновление цен в карточке
-                        $('#price-' + apartmentId + ' .weekday-price').text(newPriceWeekday);
-                        $('#price-' + apartmentId + ' .weekend-price').text(newPriceWeekend);
-                        $('#price-' + apartmentId + ' .additional-price').text(newPriceWeekdayAdditional);
-                        closeModal('priceModal');
-                    } else {
-                        alert('Ошибка при сохранении цены.');
-                    }
-                }, 'json');
-
-            } else {
-                alert('Пожалуйста, введите корректные числовые значения для всех полей.');
+            // Проверка значений
+            if (isNaN(newPriceWeekday) || newPriceWeekday <= 0 ||
+                isNaN(newPriceWeekend) || newPriceWeekend <= 0 ||
+                isNaN(newPriceWeekdayAdditional) || newPriceWeekdayAdditional <= 0) {
+                alert('Пожалуйста, введите корректные числовые значения.');
+                return;
             }
+
+            // AJAX-запрос для обновления цены
+            $.post('update_price.php', {
+                apartmentId: apartmentId,
+                newPriceWeekday: newPriceWeekday,
+                newPriceWeekend: newPriceWeekend,
+                newPriceWeekdayAdditional: newPriceWeekdayAdditional
+            }, function (response) {
+                if (response.success) {
+                    // Обновление цены на карточке без перезагрузки
+                    $('#price-weekday-' + apartmentId).text(newPriceWeekday);
+                    $('#price-weekend-' + apartmentId).text(newPriceWeekend);
+                    $('#price-additional-' + apartmentId).text(newPriceWeekdayAdditional);
+                    closeModal('priceModal'); // Закрытие модального окна
+                } else {
+                    alert('Ошибка при сохранении цены.');
+                }
+            }, 'json');
         }
+
 
     </script>
     <meta charset="UTF-8">
@@ -218,7 +218,6 @@ if (isset($_COOKIE['admin_access'])) {
                             Суточно.Ру</a></p>
                     <p></p>
                     <div class="button-container">
-                        <button class="book-now" onclick="editCalendar(<?= $apartment['ID'] ?>)">Редактировать даты</button>
                         <button class="edit-button"
                             onclick="editPrice(<?= $apartment['ID'] ?>, <?= $apartment['Cost'] ?>, <?= $apartment['CostWeekend'] ?>, <?= $apartment['Surcharge'] ?>)">Редактировать
                             цены</button>

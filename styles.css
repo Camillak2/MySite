@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, Helvetica, sans-serif, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #D8C7AD;
     color: #301811;
     margin: 0;
@@ -78,7 +78,9 @@ nav {
 
 .search-container {
     margin-top: 18px;
-    margin-right: 30px;
+    /* Убираем отступ сверху */
+    margin-right: 20px;
+    /* Убираем правый отступ */
     display: flex;
     /* Держим ввод и счетчик результатов в горизонтальном выравнивании */
     align-items: center;
@@ -101,6 +103,178 @@ nav {
     max-width: 100%;
     /* Обеспечиваем, чтобы поле поиска не выходило за пределы родителя */
 }
+
+#resultCount {
+    margin-bottom: 30px;
+    /* Отступ снизу для счетчика результатов */
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .header-container {
+        flex-direction: column;
+        /* Оставляем элементы в ряд */
+        align-items: center;
+        /* Выравнивание по центру */
+        padding: 15px;
+        /* Увеличиваем отступы для планшетов */
+    }
+
+    .nav-container {
+        flex-direction: row;
+        /* Сохраняем навигацию в ряд */
+        align-items: center;
+        width: auto;
+        /* Автоматическая ширина для планшетов */
+    }
+
+    .nav-links {
+        flex-direction: row;
+        /* Ссылки остаются в ряд */
+        margin-bottom: 0;
+        /* Убираем отступ снизу */
+    }
+
+    .nav-links li {
+        margin: 0 10px;
+        /* Увеличиваем отступы между ссылками */
+    }
+
+    .search-container {
+        width: 50%;
+        /* Половина ширины для поиска на планшетах */
+        margin-top: 0;
+        /* Убираем отступ сверху */
+    }
+
+    #searchInput {
+        width: 100%;
+        /* Полная ширина поля поиска */
+        max-width: none;
+    }
+}
+
+
+/* Медиазапросы для адаптивности */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        /* Располагаем элементы в колонку на мобильных устройствах */
+        align-items: flex-start;
+        /* Выравниваем по левому краю */
+        padding: 10px;
+        /* Уменьшаем отступы */
+    }
+
+    .nav-container {
+        flex-direction: column;
+        /* Изменяем на колонку для навигации и поиска */
+        align-items: center;
+        /* Выравнивание по левому краю */
+        width: 100%;
+        /* Увеличиваем ширину */
+    }
+
+    .nav-links {
+        flex-direction: column;
+        /* Выравниваем ссылки по вертикали */
+        margin-bottom: 10px;
+        /* Добавляем отступ снизу для отделения от поиска */
+    }
+
+    .nav-links li {
+        margin: 5px 0;
+        /* Уменьшаем отступ между ссылками */
+    }
+
+    .search-container {
+        width: 100%;
+        /* Увеличиваем ширину контейнера поиска */
+        margin-top: 10px;
+        /* Добавляем отступ сверху для отделения от ссылок */
+    }
+
+    #searchInput {
+        width: 100%;
+        /* Полная ширина для поля поиска на мобильных устройствах */
+        max-width: none;
+        /* Убираем максимальную ширину */
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        /* Ставим элементы в колонку */
+        align-items: center;
+        /* Центрируем */
+        padding: 10px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        /* Изменяем направление на колонку */
+        align-items: center;
+        /* Центрируем */
+        width: 100%;
+        /* Полная ширина для навигации */
+    }
+
+    .nav-links {
+        flex-direction: column;
+        /* Ссылки в колонку */
+        margin-bottom: 10px;
+    }
+
+    .nav-links li {
+        margin: 5px 0;
+        /* Уменьшаем отступ между ссылками */
+    }
+
+    .search-container {
+        width: 100%;
+        /* Полная ширина для поиска */
+        margin-top: 10px;
+    }
+
+    #searchInput {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+
+    .nav-links li {
+        margin: 4px 0;
+    }
+
+    .search-container {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    #searchInput {
+        width: 100%;
+        max-width: none;
+    }
+}
+
 
 #resultCount {
     margin-bottom: 30px;
@@ -260,44 +434,16 @@ nav ul li a {
     /* Не позволяет изображению уменьшаться */
 }
 
-.carousel-circles {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-
-.carousel-circles .circle {
-    width: 10px;
-    height: 10px;
-    background-color: white;
-    border-radius: 50%;
-    opacity: 1;
-    /* Убедитесь, что здесь установлено 1 */
-    cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s;
-}
-
-.carousel-circles .circle.active {
-    transform: scale(1.2);
-    background-color: #EFBAA7;
-    box-shadow: 0 0 10px rgba(250, 200, 200, 0.1);
-}
-
 .modal {
     display: none;
     position: fixed;
     z-index: 1000;
-    padding-top: 60px;
+    padding-top: 40px;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
     animation: fadeIn 0.3s ease;
     /* Плавная анимация */
@@ -371,16 +517,51 @@ nav ul li a {
     cursor: pointer;
 }
 
-/* Стили для изображения в модальном окне */
+#imageModal .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Темный фон для модального окна */
+    z-index: 1000;
+}
+
+#imageModal .modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 90%;
+    max-height: 90%;
+    /* Дополнительные отступы, чтобы изображение не касалось краев */
+}
+
+#imageModal .modal img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+}
+
 .modal img {
     display: block;
     /* Отображение изображения как блочного элемента */
     margin: auto;
     /* Центрирование изображения */
+    width: auto;
+    /* Ширина изображения по его естественной величине */
+    height: auto;
+    /* Высота изображения по его естественной величине */
     max-width: 100%;
-    /* Ограничение ширины */
+    /* Ограничение ширины, чтобы не выходило за пределы модального окна */
     max-height: 100%;
-    /* Ограничение высоты */
+    /* Ограничение высоты, чтобы не выходило за пределы модального окна */
     border-radius: 10px;
     /* Закругление углов изображения */
 }
@@ -485,7 +666,6 @@ nav ul li a {
     margin-left: 10px;
 
 }
-
 
 .maps-section {
     padding: 20px;
@@ -651,7 +831,6 @@ footer {
     /* Появление текста при добавлении класса active */
 }
 
-
 /* Появление линий при добавлении класса active */
 .line.active {
     opacity: 1;
@@ -668,59 +847,81 @@ footer {
 }
 
 
-
-.circle .booking-form {
+#booking-form.booking-form {
     display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
-.form-content {
-    background-color: #fff;
+/* Контейнер для содержимого окна с id #priceModal */
+#booking-form .form-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+/* Заголовок модального окна */
+#booking-form .form-content h2 {
+    font-size: 24px;
+    margin: 0 0 15px;
+    color: #301811;
     text-align: center;
 }
 
-.form-content .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 24px;
-}
-
-.form-content h2 {
-    margin-top: 0;
-}
-
-.form-content label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-.form-content input {
+/* Поля ввода */
+#booking-form .form-content input[type="number"] {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
     border-radius: 5px;
 }
 
-.form-content button {
-    background-color: #EFBAA7;
+/* Кнопка закрытия */
+#booking-form .close {
     color: #fff;
-    border: none;
-    padding: 10px 20px;
+    position: absolute;
+    /* Абсолютное позиционирование для размещения в углу */
+    top: 10px;
+    /* Отступ сверху */
+    right: 15px;
+    /* Отступ справа */
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
+}
+
+#booking-form .close:hover,
+#booking-form .close:focus {
+    color: #301811;
+    text-decoration: none;
+}
+
+/* Кнопка сохранения */
+#booking-form .form-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #301811;
+    color: #fff;
+    font-size: 16px;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#booking-form .form-content button:hover {
+    background-color: #EFBAA7;
 }
 
 .calendar {
@@ -768,32 +969,12 @@ footer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Контейнер для содержимого окна с id #priceModal */
-#booking-form .form-content {
-    background-color: #D8C7AD;
-    margin: 10% auto;
-    /* Центрирование окна */
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 400px;
-    /* Ограничение ширины */
-    position: relative;
-    /* Относительное позиционирование для крестика */
-    box-shadow: 0 4px 8px #301811(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease;
-    /* Плавная анимация */
-}
-
-.form-content {
-    text-align: center;
-}
-
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
     font-size: 24px;
-    color: #333;
+    color: #301811;
     cursor: pointer;
     padding: 5px;
     border-radius: 50%;
@@ -804,8 +985,7 @@ footer {
 }
 
 .close:hover {
-    background-color: #ddd;
-    /* Темнее при наведении */
+    background-color: #EFBAA7;
 }
 
 label {
@@ -856,41 +1036,28 @@ button[type="submit"]:hover {
     margin: 5px 0;
 }
 
-/* Основные стили для модального окна с id #priceModal */
 #priceModal.modal {
     display: none;
-    /* Скрыто по умолчанию */
     position: fixed;
-    /* Фиксированное позиционирование */
     z-index: 1000;
-    /* Важно, чтобы было поверх всего */
     left: 0;
     top: 0;
     width: 100%;
-    /* Полная ширина */
     height: 100%;
-    /* Полная высота */
     background-color: rgba(0, 0, 0, 0.6);
-    /* Полупрозрачный фон */
 }
 
-/* Контейнер для содержимого окна с id #priceModal */
 #priceModal .modal-content {
     background-color: #f9f9f9;
     margin: 10% auto;
-    /* Центрирование окна */
     padding: 20px;
     border-radius: 10px;
     max-width: 400px;
-    /* Ограничение ширины */
     position: relative;
-    /* Относительное позиционирование для крестика */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease;
-    /* Плавная анимация */
 }
 
-/* Заголовок модального окна */
 #priceModal .modal-content h2 {
     font-size: 24px;
     margin: 0 0 15px;
@@ -898,19 +1065,17 @@ button[type="submit"]:hover {
     text-align: center;
 }
 
-/* Поля ввода */
 #priceModal .modal-content input[type="number"] {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
     margin: 10px 0;
     font-size: 16px;
-    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 /* Кнопка закрытия */
 #priceModal .close {
-    color: #aaa;
+    color: #fff;
     position: absolute;
     /* Абсолютное позиционирование для размещения в углу */
     top: 10px;
@@ -924,7 +1089,7 @@ button[type="submit"]:hover {
 
 #priceModal .close:hover,
 #priceModal .close:focus {
-    color: #000;
+    color: #301811;
     text-decoration: none;
 }
 
@@ -932,7 +1097,7 @@ button[type="submit"]:hover {
 #priceModal .modal-content button {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #301811;
     color: #fff;
     font-size: 16px;
     border: none;
@@ -942,7 +1107,7 @@ button[type="submit"]:hover {
 }
 
 #priceModal .modal-content button:hover {
-    background-color: #45a049;
+    background-color: #EFBAA7;
 }
 
 /* Анимация появления */
